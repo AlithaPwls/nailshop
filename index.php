@@ -3,12 +3,21 @@
 session_start();
 if($_SESSION['loggedin'] !== true){
     header('Location: login.php');
+    exit();
 }
 $conn = new mysqli('localhost', 'root', '', 'shop');
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+
+$email = $_SESSION['email'];
+$userStatement = $conn->prepare('SELECT * FROM users WHERE email = ?');
+$userStatement->bind_param('s', $email);
+$userStatement->execute();
+$userResult = $userStatement->get_result();
+$user = $userResult->fetch_assoc(); // Verkrijg de gebruiker
+
 
 // Kleurtjes willekeurig rangschikken
 $sql = "SELECT * FROM products ORDER BY RAND()";

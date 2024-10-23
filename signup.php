@@ -1,35 +1,39 @@
 <?php
+session_start(); // Zorg ervoor dat je sessies gebruikt
 
-    // wait for user
-    if(!empty($_POST)){
-        $firstname = $_POST['firstname']; // Add firstname
-        $lastname = $_POST['lastname'];
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        
+// wacht op gebruiker
+if(!empty($_POST)){
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    
+    $options = [
+        'cost' => 12,
+    ];
 
-        $options = [
-            'cost' => 12,
-        ];
+    $hash = password_hash($password, PASSWORD_DEFAULT, $options); 
+    $conn = new PDO('mysql:host=localhost;dbname=shop', 'root', '');
 
-        $hash = password_hash($password, PASSWORD_DEFAULT, $options); //iedereen met hetzelfde wachtwoord krijgt een andere hash, dit gebruiken op webshop
-        $conn = new PDO('mysql:host=localhost;dbname=shop', 'root', '');
-        $statement = $conn->prepare('INSERT INTO users (firstname, lastname, email, password) VALUES (:firstname, :lastname, :email, :password)');
-        $statement->bindValue(':firstname', $firstname);
-        $statement->bindValue(':lastname', $lastname);
-        $statement->bindValue(':email', $email); //beveiligd voor SQL injectie
-        $statement->bindValue(':password', $hash);
-        $statement->execute();
+    $statement = $conn->prepare('INSERT INTO users (firstname, lastname, email, password) VALUES (:firstname, :lastname, :email, :password)');
+    $statement->bindValue(':firstname', $firstname);
+    $statement->bindValue(':lastname', $lastname);
+    $statement->bindValue(':email', $email);
+    $statement->bindValue(':password', $hash);
 
-        if ($statement->execute()) {
-            // Redirect to index.php after successful registration
-            header('Location: index.php');
-            exit; // Stop further script execution
-        } else {
-            // Handle error (optional)
-            $error = true;
-        }
+    if($statement->execute()){
+        // Als de registratie succesvol is, sla de gebruikersinformatie op in de sessie
+        $_SESSION['loggedin'] = true;
+        $_SESSION['email'] = $email; // Je kunt hier ook andere gebruikersinformatie opslaan
+
+        // Redirect naar index.php
+        header('Location: index.php');
+        exit; // Zorg ervoor dat je het script stopt na de redirect
+    } else {
+        // Als de registratie mislukt, kun je hier een foutmelding geven
+        $error = true;
     }
+}
 
     
 

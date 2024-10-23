@@ -27,6 +27,8 @@
 			session_start();
 			$_SESSION['loggedin'] = true;
 			$_SESSION['email'] = $email;
+			$_SESSION['currency'] = $user['currency']; // Stel currency in
+
 			header('Location: index.php');
 			exit();
 		} else {
