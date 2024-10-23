@@ -64,3 +64,11 @@ input[type="submit"]:hover {
     text-align: center;
     border-radius: 5px;
 }
+
+.done {
+    color: #ff3385;
+}
+
+.done a {
+    color: #ff3385;
+}

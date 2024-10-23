@@ -62,6 +62,7 @@
 
         <input type="submit" value="Login">
     </form>
+	<p class="done">No account? <a href="signup.php">Click here to sign up</a></p>
 </body>
 </html>
 

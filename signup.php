@@ -71,6 +71,8 @@ if(!empty($_POST)){
 
         <input type="submit" value="Sign Up">
     </form>
+    <p class="done">Already signed up? <a href="login.php">Click here to login</a></p>
+
 
 </body>
 </html>

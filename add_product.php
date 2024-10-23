@@ -1,5 +1,6 @@
 <?php
 include_once(__DIR__ . "/classes/products.php");
+include_once('nav.inc.php'); 
 session_start();
 
 // Controleer of de gebruiker is ingelogd
