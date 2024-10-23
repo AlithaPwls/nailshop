@@ -10,7 +10,7 @@ class Product {
     private $image_url;
     private $color_group;
 
-    // Getters en Setters voor de eigenschappen
+
 
     public function getColorName()
     {
@@ -93,7 +93,7 @@ class Product {
         return $this;
     }
 
-    // Methode om het product op te slaan in de database
+    //product opslaan in db
     public function save()
     {
         $conn = Db::getConnection();
@@ -107,7 +107,6 @@ class Product {
         $statement->execute();
     }
 
-    // Statistische methode om alle producten op te halen
     public static function getAll()
     {
         $conn = Db::getConnection();

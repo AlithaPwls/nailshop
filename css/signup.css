@@ -1,4 +1,3 @@
-/* Algemene body stijl */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #ffe6f2;
@@ -12,33 +11,29 @@ body {
     height: 100vh;
 }
 
-/* Titel van de signup pagina */
 h2 {
     text-align: center;
     color: #ff66b3;
     margin-bottom: 3rem;
 }
 
-/* Container voor signup form */
 form {
     background-color: #fff;
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 400px;  /* Maak het formulier breed */
+    width: 400px;  
     display: flex;
     flex-direction: column;
-    align-items: center;  /* Centreer de inhoud van het formulier */
+    align-items: center;  
 }
 
-/* Stijl voor input labels */
 label {
     color: #ff66b3;
     font-size: 1.1rem;
-    align-self: flex-start;  /* Zorg ervoor dat de labels links uitgelijnd zijn */
+    align-self: flex-start;  
 }
 
-/* Stijl voor input velden */
 input[type="text"],
 input[type="password"] {
     width: 100%;
@@ -50,7 +45,6 @@ input[type="password"] {
     box-sizing: border-box;
 }
 
-/* Stijl voor de signup knop */
 input[type="submit"] {
     background-color: #ff66b3;
     color: #fff;
@@ -62,12 +56,10 @@ input[type="submit"] {
     width: 100%;
 }
 
-/* Effect bij hover over de signup knop */
 input[type="submit"]:hover {
     background-color: #ff3385;
 }
 
-/* Error melding stijl */
 .form__error {
     background-color: #ffe6e6;
     color: #ff3333;

@@ -10,7 +10,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Kleurtjes willekeurig ophalen voor de homepagina
+// Kleurtjes willekeurig rangschikken
 $sql = "SELECT * FROM products ORDER BY RAND()";
 $result = $conn->query($sql);
 
@@ -50,7 +50,6 @@ $colorgroup = $_GET['color_group'] ?? 'all';
     <div class="products">
         <?php if (!empty($products)): ?>
             <?php foreach($products as $product): ?>
-                <!-- Producten weergeven afhankelijk van de categorie of glitter -->
                 <?php if (
                     ($colorgroup === 'glitter' && $product['has_glitter'] == true) || 
                     ($colorgroup === $product['color_group'] && $product['has_glitter'] == false) || 

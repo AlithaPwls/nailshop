@@ -39,7 +39,7 @@ class User {
         if(empty($password)){
             throw new Exception("Password must be at least 8 characters long");
         }
-        // Hash het wachtwoord voor beveiliging
+        // Hash het wachtwoord
         $this->password = $password;
 
         return $this;
