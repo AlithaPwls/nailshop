@@ -3,62 +3,86 @@
 include_once("Db.php");
 
 class User {
+    private $firstname;
+    private $lastname;
     private $email;
     private $password;
-}
-    /**
-     * Get the value of email
-     */ 
+
+    // Getter en setter voor firstname
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname($firstname)
+    {
+        if (empty($firstname)) {
+            throw new Exception("Firstname cannot be empty");
+        }
+        $this->firstname = $firstname;
+        return $this;
+    }
+
+    // Getter en setter voor lastname
+    public function getLastname()
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname($lastname)
+    {
+        if (empty($lastname)) {
+            throw new Exception("Lastname cannot be empty");
+        }
+        $this->lastname = $lastname;
+        return $this;
+    }
+
+    // Getter en setter voor email
     public function getEmail()
     {
         return $this->email;
     }
 
-    /**
-     * Set the value of email
-     *
-     * @return  self
-     */ 
     public function setEmail($email)
     {
-        if(empty($email)){
+        if (empty($email)) {
             throw new Exception("Invalid email address");
         }
         $this->email = $email;
-
         return $this;
     }
 
-    /**
-     * Set the value of password
-     *
-     * @return  self
-     */ 
+    // Setter voor password
     public function setPassword($password)
     {
-        if(empty($password)){
-            throw new Exception("Password must be at least 8 characters long");
+        if (empty($password)) {
+            throw new Exception("Password cannot be empty");
         }
         // Hash het wachtwoord
-        $this->password = $password;
-
+        $this->password = password_hash($password, PASSWORD_DEFAULT);
         return $this;
     }
 
-    public function save(){
-        $conn = Db::getConnection();
-        $conn = new PDO('mysql:host=localhost;dbname=shop', 'root', '');
-        $statement = $conn->prepare('INSERT INTO users (email, password) VALUES (:email, :password)' );
+    // Opslaan in de database
+    public function save()
+    {
+        // Haal de connectie op
+        $conn = Db::getConnection();  // Verwijder de dubbele PDO-instantie
+        $statement = $conn->prepare('INSERT INTO users (firstname, lastname, email, password) VALUES (:firstname, :lastname, :email, :password)');
+        $statement->bindValue(':firstname', $this->firstname);
+        $statement->bindValue(':lastname', $this->lastname);
         $statement->bindValue(':email', $this->email);
         $statement->bindValue(':password', $this->password);
         $statement->execute();
     }
 
-    public static function getAll(){
+    // Ophalen van alle gebruikers
+    public static function getAll()
+    {
         $conn = Db::getConnection();
-        $conn = new PDO ('mysql:host=localhost;dbname=shop', 'root', '');
         $statement = $conn->query('SELECT * FROM users');
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
-
+}
 ?>

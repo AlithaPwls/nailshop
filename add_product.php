@@ -30,31 +30,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/addproduct.css">
     <title>Voeg Product Toe</title>
 </head>
 <body>
-    <h1>Voeg een nieuw product toe</h1>
+    <h1>Add new product</h1>
     <form action="add_product.php" method="post">
-        <label for="color_name">Kleur Naam:</label>
-        <input type="text" id="color_name" name="color_name" required>
+        <div class="field">
+          <label for="color_name">Color name:</label>
+          <input type="text" id="color_name" name="color_name" required>
+        </div>
 
-        <label for="color_number">Kleur Nummer:</label>
-        <input type="text" id="color_number" name="color_number" required>
+        <div class="field">
+            <label for="color_number">Color number:</label>
+            <input type="text" id="color_number" name="color_number" required>
+        </div>
 
-        <label for="price">Prijs:</label>
-        <input type="number" id="price" name="price" step="0.01" required>
+        <div class="field">
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" step="0.01" required>
+        </div>
 
-        <label for="has_glitter">Heeft Glitter:</label>
-        <input type="checkbox" id="has_glitter" name="has_glitter">
+        <div class="field">
+            <label for="has_glitter">Has glitter:</label>
+            <input type="checkbox" id="has_glitter" name="has_glitter" value = "1">
+        </div>
 
-        <label for="image_url">Afbeeldings-URL:</label>
-        <input type="text" id="image_url" name="image_url" required>
+        <div class="field">
+            <label for="image_url">Image-URL:</label>
+            <input type="text" id="image_url" name="image_url" required>
+        </div>
 
-        <label for="color_group">Kleur Groep:</label>
-        <input type="text" id="color_group" name="color_group" required>
+        <div class="field">
+            <label for="color_group">Color group:</label>
+            <input type="text" id="color_group" name="color_group" required>
+        </div>
 
-        <button type="submit">Voeg Product Toe</button>
+        <button class="btn" type="submit">Add product to website</button>
     </form>
 </body>
 </html>

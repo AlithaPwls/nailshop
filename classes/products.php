@@ -61,7 +61,7 @@ class Product {
 
     public function setHasGlitter($has_glitter)
     {
-        $this->has_glitter = (bool)$has_glitter;
+        $this->has_glitter = $has_glitter ? 1 : 0;
         return $this;
     }
 
