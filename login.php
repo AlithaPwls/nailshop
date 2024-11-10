@@ -4,6 +4,7 @@
 		$statement = $conn->prepare('SELECT * FROM users WHERE email = :email');
 		$statement->bindValue(':email', $p_email);
 		$statement->execute();
+		
 
 		$user = $statement->fetch(PDO::FETCH_ASSOC);
 		if($user){

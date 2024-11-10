@@ -8,49 +8,7 @@ body {
     flex-direction: column;
     align-items: center;
 }
-/*
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #ff8bb4; 
-    padding: 0rem 2rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-}
 
-nav h1 {
-    color: #fff;
-    margin-left: 2em;
-    font-size: 1.8rem;
-}
-
-nav .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-    padding-right: 5em;
-}
-
-nav .cart-btn,
-nav .logout-btn,
-nav .nav-link {
-    color: #ff87b1;
-    background-color: #ffffff;
-    padding: 0.7rem 1.2rem;
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-}
-
-nav .cart-btn:hover,
-nav .logout-btn:hover,
-nav .nav-link:hover { 
-    background-color: #feb9d5;
-    color: white;
-}*/
 
 .products {
     display: grid;
@@ -91,22 +49,6 @@ article h3 {
     margin-bottom: 0.5rem;
 }
 
-.glitter-btn:hover,
-.glitter-btn:active {
-    background-image: url('../images/glitters.jpeg');
-    background-size: cover; 
-    background-position: center; 
-    color: white;
-}
-
-.filters {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    margin: 20px;
-}
-
 .filter-btn {
     background-color: #ffffff;
     color: #ff8bb4;
@@ -118,10 +60,31 @@ article h3 {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+
 .filter-btn:hover {
     background-color: #ff87b1;
     color: white;
 }
+
+.glitter-btn:hover,
+.glitter-btn:active,
+.glitter-btn:focus {
+    background-image: url('../images/glitters.jpeg');
+    background-size: cover; 
+    background-position: center; 
+    color: white;
+
+}
+
+.filters {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin: 20px;
+}
+
+
 
 .filter-btn.active {
     background-color: #ff8bb4;

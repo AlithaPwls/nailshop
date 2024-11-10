@@ -28,12 +28,14 @@ nav .logout-btn,
 nav .nav-link {
     color: #ff87b1;
     background-color: #ffffff;
-    padding: 0.7rem 1.2rem;
+    padding: 0.6rem 1.1rem;
     border: none;
     border-radius: 5px;
     text-decoration: none;
     font-size: 1rem;
     transition: background-color 0.3s ease;
+    border: 2px solid transparent; /* Transparante border */
+
 }
 
 nav .cart-btn:hover,
@@ -41,4 +43,5 @@ nav .logout-btn:hover,
 nav .nav-link:hover { 
     background-color: #feb9d5;
     color: white;
+    border: 2px solid white;
 }
