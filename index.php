@@ -11,6 +11,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+
+
 $email = $_SESSION['email'];
 $userStatement = $conn->prepare('SELECT * FROM users WHERE email = ?');
 $userStatement->bind_param('s', $email);
@@ -28,7 +30,8 @@ if ($result->num_rows > 0) {
 } else {
     $products = [];
 }
-$conn-->close();
+$conn->close();
+
 
 // Controleer of een kleurcategorie of glitter is geselecteerd
 $colorgroup = $_GET['color_group'] ?? 'all';
