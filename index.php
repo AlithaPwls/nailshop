@@ -28,7 +28,7 @@ if ($result->num_rows > 0) {
 } else {
     $products = [];
 }
-$conn->close();
+$conn-->close();
 
 // Controleer of een kleurcategorie of glitter is geselecteerd
 $colorgroup = $_GET['color_group'] ?? 'all';
