@@ -1,17 +1,16 @@
 <?php
 
 session_start();
-if($_SESSION['loggedin'] !== true){
+if ($_SESSION['loggedin'] !== true) {
     header('Location: login.php');
     exit();
 }
+
 $conn = new mysqli('localhost', 'root', '', 'shop');
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-
-
 
 $email = $_SESSION['email'];
 $userStatement = $conn->prepare('SELECT * FROM users WHERE email = ?');
@@ -19,7 +18,6 @@ $userStatement->bind_param('s', $email);
 $userStatement->execute();
 $userResult = $userStatement->get_result();
 $user = $userResult->fetch_assoc(); // Verkrijg de gebruiker
-
 
 // Kleurtjes willekeurig rangschikken
 $sql = "SELECT * FROM products ORDER BY RAND()";
@@ -32,7 +30,6 @@ if ($result->num_rows > 0) {
 }
 $conn->close();
 
-
 // Controleer of een kleurcategorie of glitter is geselecteerd
 $colorgroup = $_GET['color_group'] ?? 'all';
 
@@ -43,7 +40,6 @@ $colorgroup = $_GET['color_group'] ?? 'all';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/index.css">
-
     <title>Nail shop</title>
 </head>
 <body>
@@ -57,30 +53,31 @@ $colorgroup = $_GET['color_group'] ?? 'all';
         <a href="?color_group=blue" class="filter-btn <?php echo ($colorgroup === 'blue') ? 'active' : ''; ?>">Blue</a>
         <a href="?color_group=brown" class="filter-btn <?php echo ($colorgroup === 'brown') ? 'active' : ''; ?>">Brown</a>
         <a href="?color_group=glitter" class="filter-btn glitter-btn <?php echo ($colorgroup === 'glitter') ? 'active' : ''; ?>">Glitters</a>
-        </div>
-
+    </div>
     <div class="products">
-        <?php if (!empty($products)): ?>
-            <?php foreach($products as $product): ?>
-                <?php if (
-                    ($colorgroup === 'glitter' && $product['has_glitter'] == true) || 
-                    ($colorgroup === $product['color_group'] && $product['has_glitter'] == false) || 
-                    ($colorgroup === 'glitter' && $product['has_glitter'] == true && $colorgroup === $product['color_group']) || 
-                    ($product['has_glitter'] && $product['color_group'] === $colorgroup) ||  // als product bij een kleurgroep hoort EN glitters heeft
-
-                    $colorgroup === 'all'
-                ): ?>
+    <?php if (!empty($products)): ?>
+        <?php foreach ($products as $product): ?>
+            <?php if (
+                ($colorgroup === 'all') || 
+                ($colorgroup === $product['color_group']) || 
+                ($colorgroup === 'glitter' && $product['has_glitter']) ||
+                ($product['color_group'] === $colorgroup && $product['has_glitter'])
+            ): ?>
+                <a href="product_details.php?id=<?php echo $product['id']; ?>">
                     <article>
                         <img src="<?php echo $product['image_url']; ?>" alt="Product image">
                         <h2><?php echo $product['color_name'] . " - " . $product['color_number']; ?></h2>
                         <h3>€<?php echo number_format($product['price'], 2); ?></h3>
                         <button class="add">Add to cart</button>
                     </article>
-                <?php endif; ?>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p>No products found.</p>
-        <?php endif; ?>
+                </a>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>No products found.</p>
+    <?php endif; ?>
+</div>
+
     </div>
 </body>
 </html>

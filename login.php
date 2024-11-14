@@ -26,6 +26,8 @@
 
 		if($result){
 			session_start();
+			$_SESSION['user_id'] = $user['id']; // Voeg de user_id toe aan de sessie
+
 			$_SESSION['loggedin'] = true;
 			$_SESSION['email'] = $email;
 			$_SESSION['currency'] = $user['currency']; // Stel currency in

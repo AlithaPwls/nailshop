@@ -10,6 +10,14 @@ body {
 }
 
 
+ a {
+    text-decoration: none;
+}
+
+article a h2, article a h3 {
+    text-decoration: none;
+}
+
 .products {
     display: grid;
     justify-content: center;
@@ -20,6 +28,21 @@ body {
     padding-bottom: 200px;
 }
 
+
+
+article:hover {
+    transform: scale(1.02);
+    border: 1px solid #fda1c1;
+}
+
+article:hover h2 {
+    color: #fda1c1;
+}
+article:hover h3 {
+    color: #f280a8;
+}
+
+
 article {
     background-color: #fff;
     border-radius: 10px;
@@ -28,6 +51,7 @@ article {
     margin: 1rem;
     text-align: center;
     width: 15rem;
+    text-decoration: none;
 }
 
 article img {

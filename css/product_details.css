@@ -1,0 +1,124 @@
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background-color: #ffe6f2;
+    color: #f280a8;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: #ff8bb4;
+    font-size: 1.75rem; /* Kleinere header */
+    margin-top: 2rem;
+}
+
+h3 {
+    color: #da5899;
+    font-size: 1.25rem; /* Kleinere prijs */
+}
+
+p {
+    font-size: 1rem;
+    color: #da5899;
+    margin-top: 1rem;
+    line-height: 1.5;
+    max-width: 600px; /* Beperk de tekstbreedte */
+    text-align: center;
+}
+
+.product-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    width: 70%; /* Kleinere breedte */
+    margin-top: 3rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem; /* Minder padding */
+}
+
+.product-info {
+    display: flex;
+    flex-direction: row;
+    gap: 20px; /* Ruimte tussen afbeelding en tekst */
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+}
+
+.product-image img {
+    width: 300px; /* Specifieke breedte voor de afbeelding */
+    height: auto;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.product-description {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+    justify-content: flex-start; /* Add this line to align the text to the left */
+}
+
+.product-description p {
+    text-align: left;
+}
+
+button.add {
+    background-color: #ffffff;
+    color: #ff8bb4;
+    border: 1px solid #ff8bb4;
+    padding: 0.5rem 2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+button.add:hover {
+    background-color: #ff8bb4;
+    color: white;
+}
+
+.reviews {
+    width: 100%;
+    margin-top: 2rem;
+    background-color: #fef3f7;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+.reviews h4 {
+    color: #f280a8;
+    font-size: 1.25rem;
+}
+
+.reviews p {
+    color: #da5899;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+@media screen and (max-width: 900px) {
+    .product-details {
+        width: 85%; /* Kleinere breedte op kleinere schermen */
+    }
+
+    .product-info {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-image img {
+        width: 100%;
+        max-width: 350px; /* Kleinere afbeelding op kleinere schermen */
+    }
+}

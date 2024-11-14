@@ -2,7 +2,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #ff8bb4; 
+    background-color: #ff87b1; 
     font-family: Georgia, 'Times New Roman', Times, sans-serif;
     padding: 1rem 2rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -19,33 +19,32 @@ nav .pg {
 nav .nav-right {
     display: flex;
     align-items: center;
-    gap: 3rem;
+    gap: 2rem;
     padding-right: 5em;
 }
 
 nav .cart-btn,
-nav .logout-btn,
-nav .nav-link {
+nav .navbar__logout,
+nav .nav-link,
+nav .navbar__profile,
+nav .navbar__currency {
     color: #ff87b1;
     background-color: #ffffff;
     padding: 0.6rem 1.1rem;
     border: none;
     border-radius: 5px;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 0.8rem;
     transition: background-color 0.3s ease;
-    border: 2px solid transparent; /* Transparante border */
-
+    border: 2px solid transparent;
 }
 
 nav .cart-btn:hover,
-nav .logout-btn:hover,
-nav .nav-link:hover { 
+nav .navbar__logout:hover,
+nav .nav-link:hover,
+nav .navbar__profile:hover,
+nav .navbar__currency:hover { 
     background-color: #feb9d5;
     color: white;
     border: 2px solid white;
-}
-
-.navbar__logout {
-    color: white;
 }

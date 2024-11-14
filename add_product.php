@@ -67,6 +67,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="text" id="color_group" name="color_group" required>
         </div>
 
+        <div class="field">
+            <label for="color_description">Description</label>
+            <input type="text" id="color_description" name="color_description" required>
+        </div>
+
         <button class="btn" type="submit">Add product to website</button>
     </form>
 </body>
