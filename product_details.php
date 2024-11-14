@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start(); 
 
 // Verbind met de database
 $conn = new mysqli('localhost', 'root', '', 'shop');
@@ -17,12 +17,19 @@ if ($product_id) {
     $stmt->execute();
     $result = $stmt->get_result();
     $product = $result->fetch_assoc();
+
+    // Haal de reviews voor dit product op
+    $reviewStmt = $conn->prepare("SELECT reviews.text, users.email, reviews.created_at FROM review AS reviews 
+                                  JOIN users ON reviews.users_id = users.id 
+                                  WHERE reviews.products_id = ?");
+    $reviewStmt->bind_param("i", $product_id);
+    $reviewStmt->execute();
+    $reviewResult = $reviewStmt->get_result();
+    $reviews = $reviewResult->fetch_all(MYSQLI_ASSOC); // Haal alle reviews op
 }
 
 $conn->close();
-
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -47,15 +54,31 @@ $conn->close();
             </div>
         </div>
     </div>
+    <div class="reviews-section">
+    <h2>Reviews</h2>
+    
+    <!-- Formulier om review in te vullen -->
+    <form action="submit_review.php?id=<?php echo $product['id']; ?>" method="POST">
+        <input type="text" name="review" placeholder="Write a review" required>
+        <button type="submit">Submit</button>
+    </form>
 
-    <div class="review">
-        <h2>Reviews</h2>
-        
-        <form action="submit_review.php?id=<?php echo $product['id']; ?>" method="POST">
-            <input type="text" name="review" placeholder="Write a review" required>
-            <button type="submit">Submit</button>
-        </form>
+    <!-- Reviews weergeven -->
+    <div class="reviews-list">
+        <?php if (!empty($reviews)): ?>
+            <?php foreach ($reviews as $review): ?>
+                <div class="review-item">
+                    <h4><?php echo htmlspecialchars($review['email']); ?></h4>
+                    <p><?php echo htmlspecialchars($review['text']); ?></p>
+                    <small><?php echo date("d-m-Y H:i", strtotime($review['created_at'])); ?></small>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No reviews yet.</p>
+        <?php endif; ?>
     </div>
+</div>
+
 <?php else: ?>
     <p>Product niet gevonden.</p>
 <?php endif; ?>

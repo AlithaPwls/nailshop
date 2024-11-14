@@ -7,6 +7,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 5em;
 }
 
 h1 {
@@ -89,18 +90,11 @@ button.add:hover {
 }
 
 /* Stijl voor de reviews-sectie */
-.reviews-section {
-    margin-top: 2rem;
-    width: 70%; /* Zelfde breedte als productdetails */
-    background-color: #fef3f7;
-    padding: 1.5rem;
-    border-radius: 10px;
-}
-
 .reviews-list {
     display: flex;
     flex-direction: row;
     gap: 10px; /* Ruimte tussen de reviews */
+    flex-wrap: wrap; /* Zorg ervoor dat ze door kunnen gaan naar de volgende rij als er niet genoeg ruimte is */
 }
 
 .review-item {
@@ -109,7 +103,7 @@ button.add:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 1rem;
     text-align: left;
-    margin-bottom: 1rem;
+    width: 30%; /* Zorg ervoor dat de reviews naast elkaar komen */
 }
 
 .review-item h4 {
@@ -122,6 +116,7 @@ button.add:hover {
     color: #da5899;
     font-size: 1rem;
 }
+
 
 /* Stijl voor formulier voor review */
 form input {
