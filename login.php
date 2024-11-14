@@ -5,12 +5,11 @@
 		$statement->bindValue(':email', $p_email);
 		$statement->execute();
 		
-
 		$user = $statement->fetch(PDO::FETCH_ASSOC);
 		if($user){
 			$hash = $user['password'];
 			if(password_verify($p_password, $hash)){
-				return true;
+				return $user; // Return the user data if login is successful
 			} else {
 				return false;
 			}
@@ -22,12 +21,11 @@
 	if(!empty($_POST)){
 		$email = $_POST['email'];
 		$password = $_POST['password'];
-		$result = canLogin($email, $password);
+		$user = canLogin($email, $password); // Get the user data
 
-		if($result){
+		if($user){
 			session_start();
 			$_SESSION['user_id'] = $user['id']; // Voeg de user_id toe aan de sessie
-
 			$_SESSION['loggedin'] = true;
 			$_SESSION['email'] = $email;
 			$_SESSION['currency'] = $user['currency']; // Stel currency in
@@ -38,7 +36,8 @@
 			$error = true;
 		}
 	}
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -48,7 +47,6 @@
 </head>
 <body>
     <h2>Login to discover the colors</h2>
-
 
     <?php if(isset($error)): ?>
         <div class="form__error">
@@ -68,4 +66,3 @@
 	<p class="done">No account? <a href="signup.php">Click here to sign up</a></p>
 </body>
 </html>
-

@@ -88,25 +88,60 @@ button.add:hover {
     color: white;
 }
 
-.reviews {
-    width: 100%;
+/* Stijl voor de reviews-sectie */
+.reviews-section {
     margin-top: 2rem;
+    width: 70%; /* Zelfde breedte als productdetails */
     background-color: #fef3f7;
-    padding: 1rem;
+    padding: 1.5rem;
     border-radius: 10px;
 }
 
-.reviews h4 {
+.reviews-list {
+    display: flex;
+    flex-direction: row;
+    gap: 10px; /* Ruimte tussen de reviews */
+}
+
+.review-item {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+.review-item h4 {
     color: #f280a8;
     font-size: 1.25rem;
+    margin-bottom: 0.5rem;
 }
 
-.reviews p {
+.review-item p {
     color: #da5899;
     font-size: 1rem;
-    margin-top: 0.5rem;
 }
 
+/* Stijl voor formulier voor review */
+form input {
+    padding: 0.5rem;
+    border: 1px solid #f280a8;
+    border-radius: 5px;
+    width: 80%;
+    margin-bottom: 1rem;
+}
+
+form button {
+    padding: 0.5rem 2rem;
+    border: none;
+    background-color: #ff8bb4;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Responsieve aanpassingen voor kleinere schermen */
 @media screen and (max-width: 900px) {
     .product-details {
         width: 85%; /* Kleinere breedte op kleinere schermen */
@@ -120,5 +155,9 @@ button.add:hover {
     .product-image img {
         width: 100%;
         max-width: 350px; /* Kleinere afbeelding op kleinere schermen */
+    }
+
+    .review-item {
+        width: 100%; /* Op kleinere schermen komt elke review op een nieuwe regel */
     }
 }
