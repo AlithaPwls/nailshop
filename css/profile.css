@@ -1,0 +1,56 @@
+/* CSS voor profielpagina */
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background-color: #ffe6f2;
+    color: #f280a8;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2 {
+    color: #aa2755;
+    margin-top: 50px;
+}
+
+.profile-info {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.profile-info p {
+    font-size: 1.1rem;
+    color: #aa2755;
+    margin: 10px 0;
+}
+
+.profile-info strong {
+    color: #f280a8;
+}
+
+/* Specifieke knopstijl voor de "Change Password"-link */
+.change-password-btn,
+.orders-btn {
+    color: #ff87b1;
+    background-color: #ffffff;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1rem;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.change-password-btn:hover {
+    background-color: #feb9d5;
+    color: white;
+}

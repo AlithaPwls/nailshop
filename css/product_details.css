@@ -89,12 +89,17 @@ button.add:hover {
     color: white;
 }
 
+.reviews-section {
+    margin-left: 0; /* Verwijder de negatieve marge */
+    width: 70%; /* Zorg ervoor dat het dezelfde breedte heeft als .product-details */
+    margin-top: 2rem; /* Voeg wat ruimte toe boven de reviews sectie */
+}
+
 /* Stijl voor de reviews-sectie */
 .reviews-list {
-    display: flex;
-    flex-direction: row;
-    gap: 10px; /* Ruimte tussen de reviews */
-    flex-wrap: wrap; /* Zorg ervoor dat ze door kunnen gaan naar de volgende rij als er niet genoeg ruimte is */
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Display 4 columns */
+    gap: 20px; /* Space between the reviews */
 }
 
 .review-item {
@@ -103,13 +108,14 @@ button.add:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 1rem;
     text-align: left;
-    width: 30%; /* Zorg ervoor dat de reviews naast elkaar komen */
+    width: 80%; /* Zorg ervoor dat de reviews naast elkaar komen */
 }
 
 .review-item h4 {
     color: #f280a8;
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
+    margin-top: 0.5em;
 }
 
 .review-item p {
@@ -117,14 +123,18 @@ button.add:hover {
     font-size: 1rem;
 }
 
+.review-input-container {
+    display: flex;
+    gap: 10px; /* Ruimte tussen het invulveld en de knop */
+    width: 80%; /* Zorg ervoor dat de elementen niet de hele breedte nemen */
+    margin-bottom: 1rem;
+}
 
-/* Stijl voor formulier voor review */
 form input {
     padding: 0.5rem;
     border: 1px solid #f280a8;
     border-radius: 5px;
-    width: 80%;
-    margin-bottom: 1rem;
+    flex-grow: 1; /* Laat het invoerveld de beschikbare ruimte vullen */
 }
 
 form button {
@@ -135,7 +145,6 @@ form button {
     border-radius: 5px;
     cursor: pointer;
 }
-
 /* Responsieve aanpassingen voor kleinere schermen */
 @media screen and (max-width: 900px) {
     .product-details {
