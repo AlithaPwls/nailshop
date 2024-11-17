@@ -54,6 +54,7 @@ if (!empty($_POST)) {
 
 </head>
 <body>
+    <?php include_once('nav.inc.php'); ?>
     <h2>Change Password</h2>
 
     <?php if(isset($success)): ?>
@@ -72,7 +73,7 @@ if (!empty($_POST)) {
         <label for="confirm_password">Confirm your new password</label>
         <input type="password" id="confirm_password" name="confirm_password" required>
 
-        <input type="submit" value="Update Password">
+        <input type="submit" class="submit" value="Update Password">
     </form>
 </body>
 </html>

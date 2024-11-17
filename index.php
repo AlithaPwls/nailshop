@@ -79,5 +79,27 @@ $colorgroup = $_GET['color_group'] ?? 'all';
 </div>
 
     </div>
+
+    <button id="back-to-top" onclick="scrollToTop()">⬆</button>
+
+<script>
+    // Laat de knop zien/verbergen op basis van de scrollpositie
+    window.onscroll = function () {
+        const backToTopButton = document.getElementById('back-to-top');
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            backToTopButton.style.display = "block";
+        } else {
+            backToTopButton.style.display = "none";
+        }
+    };
+
+    // Scroll naar de bovenkant van de pagina
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+</script>
 </body>
 </html>
