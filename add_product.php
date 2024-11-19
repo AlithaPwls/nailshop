@@ -1,32 +1,51 @@
 <?php
-include_once(__DIR__ . "/classes/products.php");
-include_once('nav.inc.php'); 
 session_start();
 
-// Controleer of de gebruiker is ingelogd
 if ($_SESSION['loggedin'] !== true) {
     header('Location: login.php');
+    exit();
 }
+
+$conn = new mysqli('localhost', 'root', '', 'shop');
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$email = $_SESSION['email'];
+$userStatement = $conn->prepare('SELECT * FROM users WHERE email = ?');
+$userStatement->bind_param('s', $email);
+$userStatement->execute();
+$userResult = $userStatement->get_result();
+$user = $userResult->fetch_assoc(); // Verkrijg de gebruiker
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
+        // Valideer de invoer
+        $colorName = htmlspecialchars($_POST['color_name'], ENT_QUOTES, 'UTF-8');
+        $colorNumber = htmlspecialchars($_POST['color_number'], ENT_QUOTES, 'UTF-8');
+        $price = floatval($_POST['price']); // Zorg dat dit een geldig getal is
+        $hasGlitter = isset($_POST['has_glitter']) ? 1 : 0;
+        $imageUrl = htmlspecialchars($_POST['image_url'], ENT_QUOTES, 'UTF-8');
+        $colorGroup = htmlspecialchars($_POST['color_group'], ENT_QUOTES, 'UTF-8');
+        $colorDescription = htmlspecialchars($_POST['color_description'], ENT_QUOTES, 'UTF-8');
+
+        // Opslaan in de database
         $product = new Product();
-        $product->setColorName($_POST['color_name']);
-        $product->setColorNumber($_POST['color_number']);
-        $product->setPrice($_POST['price']);
-        $product->setHasGlitter(isset($_POST['has_glitter']) ? 1 : 0);
-        $product->setImageUrl($_POST['image_url']);
-        $product->setColorGroup($_POST['color_group']);
+        $product->setColorName($colorName);
+        $product->setColorNumber($colorNumber);
+        $product->setPrice($price);
+        $product->setHasGlitter($hasGlitter);
+        $product->setImageUrl($imageUrl);
+        $product->setColorGroup($colorGroup);
         $product->save();
 
         echo "Product succesvol toegevoegd!";
     } catch (Exception $e) {
-        echo "Fout: " . $e->getMessage();
+        echo "Fout: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
     }
 }
-?>
-
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -35,8 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Voeg Product Toe</title>
 </head>
 <body>
+    <?php include_once('nav.inc.php'); ?>
     <h1>Add new product</h1>
-    <form action="add_product.php" method="post">
+    <form action="add_product.php" method="post" class="foremeke">
         <div class="field">
           <label for="color_name">Color name:</label>
           <input type="text" id="color_name" name="color_name" required>

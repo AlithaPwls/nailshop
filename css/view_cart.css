@@ -1,0 +1,121 @@
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background-color: #ffe6f2;
+    color: #f280a8;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+.cart-container {
+    width: 80%;
+    margin-top: 2rem;
+    padding-bottom: 50px;
+}
+
+.cart-container h1 {
+    font-size: 2rem;
+    color: #f280a8;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #f280a8;
+}
+
+th {
+    background-color: #ff8bb4;
+    color: white;
+}
+
+td {
+    background-color: #fff;
+}
+
+td img {
+    width: 50px;
+    height: auto;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #fff;
+    color: #f280a8;
+    border: 1px solid #f280a8;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+    background-color: #f280a8;
+    color: white;
+}
+
+.cart-total {
+    background-color: #fff;
+    padding: 1rem;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    text-align: center;
+}
+
+.cart-total p {
+    font-size: 1.2rem;
+    color: #f280a8;
+}
+
+.checkout a {
+    display: inline-block;
+    background-color: #fff;
+    color: #f280a8;
+    padding: 1rem 2rem;
+    margin-top: 40px;
+    border-radius: 5px;
+    text-decoration: none;
+    border: 1px solid #f280a8;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.checkout a:hover {
+    background-color: #f280a8;
+    color: white;
+}
+
+@media screen and (max-width: 1300px) {
+    .cart-container {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    table td {
+        font-size: 0.9rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    table {
+        font-size: 0.8rem;
+    }
+    .cart-container h1 {
+        font-size: 1.5rem;
+    }
+}

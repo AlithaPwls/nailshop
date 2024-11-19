@@ -4,7 +4,7 @@ nav {
     align-items: center;
     background-color: #ff87b1; 
     font-family: Georgia, 'Times New Roman', Times, sans-serif;
-    padding: 1rem 2rem;
+    padding: 1rem 2rem !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
 }
@@ -22,6 +22,52 @@ nav .nav-right {
     gap: 2rem;
     padding-right: 5em;
 }
+
+
+/* Voeg toe aan je bestaande nav.css */
+
+.search-form {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 20px;
+
+}
+
+/* Stijl voor de placeholder */
+.search-input::placeholder {
+    color: #f280a8;
+    font-size: 12px; /* Pas de fontgrootte aan naar wens */
+    font-style: italic; /* Optioneel: voeg een stijl toe zoals cursief */
+}
+
+
+
+.search-input {
+    padding: 0.5rem;
+    border: 1px solid #f280a8;
+    border-radius: 5px;
+    width: 200px;
+    font-size: 1rem;
+    color: #f280a8;
+    background-color: #fff;
+}
+
+.search-btn {
+    padding: 0.6rem 1.1rem;    
+    background-color:#f9b9cf;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 0px;
+    transition: background-color 0.3s ease;
+}
+
+.search-btn:hover {
+    background-color: #da5899;
+}
+
+
 
 nav .cart-btn,
 nav .navbar__logout,

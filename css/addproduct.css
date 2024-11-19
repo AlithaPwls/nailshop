@@ -13,11 +13,12 @@ h1 {
     color: #aa2755;
 }
 
-form {
+.foremeke {
     display: flex;
     flex-direction: column;
     gap: 30px;
     margin-top: 50px;
+    padding-bottom: 1em;
 }
 
 .field label {
@@ -38,3 +39,19 @@ form {
     background-color: #feb9d5;
     color: white;
 }
+
+.add-product-form {
+    padding-bottom: 1em; /* Specifieke padding alleen voor dit formulier */
+}
+
+.field input {
+    border: 1px solid pink;
+    padding: 0.5em;
+}
+
+.field input {
+    border: 1px solid pink;
+    padding: 0.5em;
+}
+
+

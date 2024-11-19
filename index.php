@@ -68,8 +68,8 @@ $colorgroup = $_GET['color_group'] ?? 'all';
                         <img src="<?php echo $product['image_url']; ?>" alt="Product image">
                         <h2><?php echo $product['color_name'] . " - " . $product['color_number']; ?></h2>
                         <h3>€<?php echo number_format($product['price'], 2); ?></h3>
-                        <button class="add">Add to cart</button>
-                    </article>
+                        <button class="add" data-product-id="<?php echo $product['id']; ?>">Add to cart</button>
+                        </article>
                 </a>
             <?php endif; ?>
         <?php endforeach; ?>
@@ -101,5 +101,35 @@ $colorgroup = $_GET['color_group'] ?? 'all';
         });
     }
 </script>
+<script>
+    document.querySelectorAll('.add').forEach(button => {
+        button.addEventListener('click', function () {
+            const productId = this.dataset.productId;
+            console.log('product ID:', productId);
+
+            // Verstuur het product-ID naar de server
+            fetch('add_to_cart.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ product_id: productId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Product added to cart!');
+                } else {
+                    alert('Failed to add product. ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Something went wrong.');
+            });
+        });
+    });
+</script>
+
 </body>
 </html>

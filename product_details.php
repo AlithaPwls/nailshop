@@ -1,12 +1,24 @@
 <?php
-session_start(); 
+session_start();
 
-// Verbind met de database
+
+if ($_SESSION['loggedin'] !== true) {
+    header('Location: login.php');
+    exit();
+}
+
 $conn = new mysqli('localhost', 'root', '', 'shop');
-
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+
+$email = $_SESSION['email'];
+$userStatement = $conn->prepare('SELECT * FROM users WHERE email = ?');
+$userStatement->bind_param('s', $email);
+$userStatement->execute();
+$userResult = $userStatement->get_result();
+$user = $userResult->fetch_assoc(); // Verkrijg de gebruiker
+
 
 // Haal product-ID op uit de URL
 $product_id = $_GET['id'] ?? null;
@@ -50,8 +62,8 @@ $conn->close();
                 <h1><?php echo htmlspecialchars($product['color_name']); ?></h1>
                 <h3>€<?php echo number_format($product['price'], 2); ?></h3>
                 <p><?php echo htmlspecialchars($product['description']); ?></p>
-                <button class="add">Add to cart</button>
-            </div>
+                <button class="add" data-product-id="<?php echo $product['id']; ?>">Add to cart</button>
+                </div>
         </div>
     </div>
     <div class="reviews-section">
@@ -84,5 +96,35 @@ $conn->close();
 <?php else: ?>
     <p>Product niet gevonden.</p>
 <?php endif; ?>
+
+<script>
+    // Selecteer de "Add to cart" knop
+    document.querySelector('.add').addEventListener('click', function () {
+        const productId = this.dataset.productId;
+        console.log('product ID:', productId); // Log voor debuggen
+
+        // Verstuur het product-ID naar de server
+        fetch('add_to_cart.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ product_id: productId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Product added to cart!');
+            } else {
+                alert('Failed to add product. ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Something went wrong.');
+        });
+    });
+</script>
+
 </body>
 </html>
