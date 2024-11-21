@@ -1,8 +1,6 @@
 <?php
-
-
-
 session_start();
+
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("Location: login.php");
     exit;
@@ -11,7 +9,9 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 $conn = new PDO('mysql:host=localhost;dbname=shop', 'root', '');
 $email = $_SESSION['email'];
 
-$statement = $conn->prepare("SELECT firstname, lastname, email FROM users WHERE email = :email");
+// Oorspronkelijke query
+$statement = $conn->prepare("SELECT firstname, lastname, email, currency FROM users WHERE email = :email");
+
 $statement->bindValue(':email', $email);
 $statement->execute();
 $user = $statement->fetch(PDO::FETCH_ASSOC);
