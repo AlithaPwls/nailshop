@@ -63,7 +63,7 @@ if (!empty($_POST)) {
         <p><?php echo htmlspecialchars($error); ?></p>
     <?php endif; ?>
 
-    <form action="" method="POST">
+    <form action="" method="POST" class="foremeke">
         <label for="old_password">Enter your old password</label>
         <input type="password" id="old_password" name="old_password" required>
 

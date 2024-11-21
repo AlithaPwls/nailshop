@@ -72,7 +72,8 @@ p {
     text-align: left;
 }
 
-button.add {
+button.add,
+.edit-product-btn{
     background-color: #ffffff;
     color: #ff8bb4;
     border: 1px solid #ff8bb4;
@@ -82,6 +83,11 @@ button.add {
     text-decoration: none;
     margin-top: 1rem;
     font-size: 1rem;
+}
+
+.edit-product-btn {
+    margin-left: 200px;
+    margin-top: -37px;
 }
 
 button.add:hover {
@@ -144,6 +150,10 @@ form button {
     color: white;
     border-radius: 5px;
     cursor: pointer;
+}
+
+form button:hover {
+    background-color: #da5899;
 }
 /* Responsieve aanpassingen voor kleinere schermen */
 @media screen and (max-width: 900px) {

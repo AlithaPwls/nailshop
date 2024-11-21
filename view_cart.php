@@ -96,8 +96,8 @@ $conn->close();
                             $total += $itemTotal;
                         ?>
                         <tr>
-                            <td>
-                                <img src="<?php echo $item['image_url']; ?>" alt="Product Image" width="50">
+                            <td class="product-info">
+                                <img src="<?php echo $item['image_url']; ?>" alt="Product Image">
                                 <?php echo htmlspecialchars($item['color_name']) . " - " . htmlspecialchars($item['color_number']); ?>
                             </td>
                             <td>€<?php echo number_format($item['price'], 2); ?></td>
