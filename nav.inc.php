@@ -10,7 +10,9 @@
             <input type="text" name="search" placeholder="Search by color name or number" class="search-input">
             <button type="submit" class="search-btn">Search</button>
         </form>
-        <a href="add_product.php" class="nav-link">Add product</a>
+            <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']): ?>
+                <a href="add_product.php" class="nav-link">Add product</a>
+            <?php endif; ?>        
         <a href="view_cart.php" class="cart-btn">View Cart</a>
         <a href="#" class="navbar__currency">Currency - € <?php echo isset($user['currency']) ? number_format($user['currency'], 2, ',', '.'): '€0.00'; ?></a>
         

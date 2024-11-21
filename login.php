@@ -1,42 +1,59 @@
 <?php
-	function canLogin($p_email, $p_password){ 
-		$conn = new PDO('mysql:host=localhost;dbname=shop', 'root', '');
-		$statement = $conn->prepare('SELECT * FROM users WHERE email = :email');
-		$statement->bindValue(':email', $p_email);
-		$statement->execute();
-		
-		$user = $statement->fetch(PDO::FETCH_ASSOC);
-		if($user){
-			$hash = $user['password'];
-			if(password_verify($p_password, $hash)){
-				return $user; // Return the user data if login is successful
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
+function canLogin($p_email, $p_password){ 
+    // Maak verbinding met de database
+    $conn = new PDO('mysql:host=localhost;dbname=shop', 'root', '');
+    
+    // Query om gebruiker op te halen met email
+    $statement = $conn->prepare('SELECT * FROM users WHERE email = :email');
+    $statement->bindValue(':email', $p_email);
+    $statement->execute();
+    
+    // Verkrijg de gebruiker
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-	if(!empty($_POST)){
-		$email = $_POST['email'];
-		$password = $_POST['password'];
-		$user = canLogin($email, $password); // Get the user data
+    if($user){
+        // Verkrijg het gehashte wachtwoord uit de database
+        $hash = $user['password'];
+        
+        // Controleer of het wachtwoord klopt
+        if(password_verify($p_password, $hash)){
+            return $user; // Retourneer de gebruikersdata als inloggen succesvol is
+        } else {
+            return false; // Wachtwoord klopt niet
+        }
+    } else {
+        return false; // Geen gebruiker gevonden
+    }
+}
 
-		if($user){
-			session_start();
-			$_SESSION['user_id'] = $user['id']; // Voeg de user_id toe aan de sessie
-			$_SESSION['loggedin'] = true;
-			$_SESSION['email'] = $email;
-			$_SESSION['currency'] = $user['currency']; // Stel currency in
+if(!empty($_POST)){
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    
+    // Verkrijg de gebruikersdata
+    $user = canLogin($email, $password);
 
-			header('Location: index.php');
-			exit();
-		} else {
-			$error = true;
-		}
-	}
+    if($user){
+        // Start de sessie
+        session_start();
+        
+        // Sla de gegevens van de gebruiker op in de sessie
+        $_SESSION['user_id'] = $user['id']; 
+        $_SESSION['loggedin'] = true;
+        $_SESSION['email'] = $email;
+        $_SESSION['currency'] = $user['currency']; 
+        $_SESSION['is_admin'] = $user['is_admin']; // Sla 'is_admin' op in de sessie
+
+        // Verwijs door naar de homepage of dashboard
+        header('Location: index.php');
+        exit();
+    } else {
+        // Foutmelding als inloggen mislukt
+        $error = true;
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,6 +80,7 @@
 
         <input type="submit" value="Login">
     </form>
-	<p class="done">No account? <a href="signup.php">Click here to sign up</a></p>
+
+    <p class="done">No account? <a href="signup.php">Click here to sign up</a></p>
 </body>
 </html>
