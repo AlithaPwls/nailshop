@@ -6,6 +6,8 @@ if ($_SESSION['loggedin'] !== true) {
     exit();
 }
 
+include_once 'classes/products.php';
+
 $conn = new mysqli('localhost', 'root', '', 'shop');
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -28,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hasGlitter = isset($_POST['has_glitter']) ? 1 : 0;
         $imageUrl = htmlspecialchars($_POST['image_url'], ENT_QUOTES, 'UTF-8');
         $colorGroup = htmlspecialchars($_POST['color_group'], ENT_QUOTES, 'UTF-8');
-        $colorDescription = htmlspecialchars($_POST['color_description'], ENT_QUOTES, 'UTF-8');
+        $colorDescription = htmlspecialchars($_POST['color_description'], ENT_QUOTES, 'UTF-8'); // hier wast fout
 
         // Opslaan in de database
         $product = new Product();
@@ -38,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $product->setHasGlitter($hasGlitter);
         $product->setImageUrl($imageUrl);
         $product->setColorGroup($colorGroup);
+        $product->setColorDescription($colorDescription);
         $product->save();
 
         echo "Product succesvol toegevoegd!";

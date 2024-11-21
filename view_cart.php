@@ -106,7 +106,7 @@ $conn->close();
                             <td>
                                 <!-- De vuilbakknop voor verwijdering -->
                                 <button type="submit" name="remove_product" value="<?php echo $item['id']; ?>">
-                                    🗑️
+                                    ❌
                                 </button>
                             </td>
                         </tr>

@@ -110,14 +110,20 @@ class Product {
     public function save()
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare('INSERT INTO products (color_name, color_number, price, has_glitter, image_url, color_group, color_description) VALUES (:color_name, :color_number, :price, :has_glitter, :image_url, :color_group, :color_description)');
+        $statement = $conn->prepare('
+            INSERT INTO products 
+            (color_name, color_number, price, has_glitter, image_url, color_group, description) 
+            VALUES 
+            (:color_name, :color_number, :price, :has_glitter, :image_url, :color_group, :description)
+        ');
+    
         $statement->bindValue(':color_name', $this->color_name);
         $statement->bindValue(':color_number', $this->color_number);
         $statement->bindValue(':price', $this->price);
         $statement->bindValue(':has_glitter', $this->has_glitter);
         $statement->bindValue(':image_url', $this->image_url);
         $statement->bindValue(':color_group', $this->color_group);
-        $statement->bindValue(':color_description', $this->color_description);
+        $statement->bindValue(':description', $this->color_description); // Gebruik nu 'description'
         $statement->execute();
     }
 

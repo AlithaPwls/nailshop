@@ -80,6 +80,22 @@ $colorgroup = $_GET['color_group'] ?? 'all';
 
     </div>
 
+    <footer style="background-color: #f9f9f9; color: #333; text-align: center; padding: 20px; font-size: 14px;">
+    <div>
+        <p>&copy; 2024 Pink Gellac. Alle rechten voorbehouden.</p>
+        <nav style="margin-top: 10px;">
+            <a href="privacy.php" style="margin-right: 15px; color: #555; text-decoration: none;">Privacybeleid</a>
+            <a href="terms.php" style="margin-right: 15px; color: #555; text-decoration: none;">Algemene voorwaarden</a>
+            <a href="contact.php" style="color: #555; text-decoration: none;">Contact</a>
+        </nav>
+        <p style="margin-top: 10px;">Volg ons: 
+            <a href="https://www.instagram.com" target="_blank" style="color: #555; text-decoration: none; margin-left: 5px;">Instagram</a> | 
+            <a href="https://www.facebook.com" target="_blank" style="color: #555; text-decoration: none; margin-left: 5px;">Facebook</a>
+        </p>
+    </div>
+</footer>
+
+
     <button id="back-to-top" onclick="scrollToTop()">⬆</button>
 
 <script>
