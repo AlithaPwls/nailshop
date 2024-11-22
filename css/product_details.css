@@ -35,7 +35,7 @@ p {
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
-    width: 70%; /* Kleinere breedte */
+    width: 60%; /* Kleinere breedte */
     margin-top: 3rem;
     background-color: #fff;
     border-radius: 10px;
@@ -53,7 +53,7 @@ p {
 }
 
 .product-image img {
-    width: 300px; /* Specifieke breedte voor de afbeelding */
+    width: 350px; /* Specifieke breedte voor de afbeelding */
     height: auto;
     border-radius: 10px;
     margin-right: 20px;
@@ -97,7 +97,7 @@ button.add:hover {
 
 .reviews-section {
     margin-left: 0; /* Verwijder de negatieve marge */
-    width: 70%; /* Zorg ervoor dat het dezelfde breedte heeft als .product-details */
+    width: 60%; /* Zorg ervoor dat het dezelfde breedte heeft als .product-details */
     margin-top: 2rem; /* Voeg wat ruimte toe boven de reviews sectie */
 }
 

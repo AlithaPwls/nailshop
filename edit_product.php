@@ -6,6 +6,16 @@ if ($_SESSION['loggedin'] !== true || (int)$_SESSION['is_admin'] !== 1) {
 }
 
 $product_id = $_GET['id'] ?? null; // Haal de ID uit de URL
+$product = [
+    'id' => '',
+    'color_name' => '',
+    'color_number' => '',
+    'price' => '',
+    'has_glitter' => 0,
+    'image_url' => '',
+    'color_group' => '',
+    'description' => '',
+];
 
 if ($product_id) {
     // Haal productdata op uit de database
@@ -18,7 +28,7 @@ if ($product_id) {
     $stmt->bind_param("i", $product_id);
     $stmt->execute();
     $result = $stmt->get_result();
-    $product = $result->fetch_assoc();
+    $product = $result->fetch_assoc() ?: $product;
     $conn->close();
 }
 
@@ -38,16 +48,41 @@ if ($product_id) {
 
     <!-- Form om product te bewerken -->
     <form action="edit_product.php" method="POST" class="foremeke">
-        <input type="hidden" name="id" value="<?php echo $product['id']; ?>"> <!-- Verberg de ID in het formulier -->
+        <input type="hidden" name="id" value="<?php echo htmlspecialchars($product['id']); ?>"> <!-- Verberg de ID in het formulier -->
         
         <div class="field">
             <label for="color_name">Color Name</label>
-            <input type="text" name="color_name" value="<?php echo $product['color_name']; ?>" required><br>
+            <input type="text" name="color_name" value="<?php echo htmlspecialchars($product['color_name']); ?>" required><br>
+        </div>
+
+        <div class="field">
+            <label for="color_number">Color Number</label>
+            <input type="text" name="color_number" value="<?php echo htmlspecialchars($product['color_number']); ?>" required><br>
         </div>
 
         <div class="field">
             <label for="price">Price</label>
-            <input type="text" name="price" value="<?php echo $product['price']; ?>" required><br>
+            <input type="text" name="price" value="<?php echo htmlspecialchars($product['price']); ?>" required><br>
+        </div>
+
+        <div class="field">
+            <label for="has_glitter">Has Glitter:</label>
+            <input type="checkbox" id="has_glitter" name="has_glitter" value="1" <?php echo $product['has_glitter'] ? 'checked' : ''; ?>>
+        </div>
+
+        <div class="field">
+            <label for="image_url">Image-URL</label>
+            <input type="text" name="image_url" value="<?php echo htmlspecialchars($product['image_url']); ?>" required><br>
+        </div>
+
+        <div class="field">
+            <label for="color_group">Color Group:</label>
+            <input type="text" name="color_group" value="<?php echo htmlspecialchars($product['color_group']); ?>" required>
+        </div>
+
+        <div class="field">
+            <label for="color_description">Description</label>
+            <input type="text" name="color_description" value="<?php echo htmlspecialchars($product['description']); ?>" required>
         </div>
 
         <button class="btn" type="submit" name="update_product">Update Product</button>
@@ -55,7 +90,7 @@ if ($product_id) {
 
     <!-- Form om product te verwijderen -->
     <form action="edit_product.php" method="POST">
-        <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
+        <input type="hidden" name="id" value="<?php echo htmlspecialchars($product['id']); ?>">
         <button class="btn" type="submit" name="delete_product" onclick="return confirm('Are you sure you want to delete this product?');">Delete Product</button>
     </form>
 </body>
@@ -64,9 +99,14 @@ if ($product_id) {
 <?php
 // Update product
 if (isset($_POST['update_product'])) {
-    $id = $_POST['id'];  // Haal de ID uit de POST-data
+    $id = intval($_POST['id']);
     $color_name = $_POST['color_name'];
+    $color_number = $_POST['color_number'];
     $price = $_POST['price'];
+    $has_glitter = isset($_POST['has_glitter']) ? 1 : 0;
+    $image_url = $_POST['image_url'];
+    $color_group = $_POST['color_group'];
+    $description = $_POST['color_description'];
 
     // Verbind met de database en werk het product bij
     $conn = new mysqli('localhost', 'root', '', 'shop');
@@ -74,8 +114,8 @@ if (isset($_POST['update_product'])) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $stmt = $conn->prepare("UPDATE products SET color_name = ?, price = ? WHERE id = ?");
-    $stmt->bind_param("ssi", $color_name, $price, $id);
+    $stmt = $conn->prepare("UPDATE products SET color_name = ?, color_number = ?, price = ?, has_glitter = ?, image_url = ?, color_group = ?, description = ? WHERE id = ?");
+    $stmt->bind_param("sssisssi", $color_name, $color_number, $price, $has_glitter, $image_url, $color_group, $description, $id);
 
     if ($stmt->execute()) {
         // Redirect naar product detail pagina na update
@@ -89,7 +129,7 @@ if (isset($_POST['update_product'])) {
 
 // Delete product
 if (isset($_POST['delete_product'])) {
-    $id = $_POST['id'];
+    $id = intval($_POST['id']);
 
     // Verbind met de database en verwijder het product
     $conn = new mysqli('localhost', 'root', '', 'shop');
