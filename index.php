@@ -87,10 +87,10 @@ $colorgroup = $_GET['color_group'] ?? 'all';
 </div>
 
     </div>
-
     <footer>
         <p>&copy; <?php echo date('Y'); ?> Nail Shop. All rights reserved.</p>
     </footer>
+
 
     <button id="back-to-top" onclick="scrollToTop()">⬆</button>
 

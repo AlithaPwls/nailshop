@@ -25,7 +25,7 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/nav.css">
-    <link rel="stylesheet" href="css/product_details.css"> <!-- Voeg product_details.css toe -->
+    <link rel="stylesheet" href="css/search_results.css"> <!-- Voeg product_details.css toe -->
     <title>Search Results</title>
 </head>
 <body>
@@ -41,12 +41,17 @@ $conn->close();
                         <div class="product-image">
                             <img src="<?php echo $product['image_url']; ?>" alt="Product Image">
                         </div>
+
+
                         <div class="product-description">
                             <h3><?php echo htmlspecialchars($product['color_name']); ?></h3>
                             <p>Color Number: <?php echo htmlspecialchars($product['color_number']); ?></p>
                             <p>Price: €<?php echo number_format($product['price'], 2); ?></p>
                             <a href="product_details.php?id=<?php echo $product['id']; ?>" class="add">View Details</a>
                         </div>
+
+
+
                     </article>
                 <?php endforeach; ?>
             <?php else: ?>

@@ -15,7 +15,7 @@ body {
 h1 {
     color: #ff8bb4;
     font-size: 1.75rem; /* Kleinere header */
-    margin-top: 2rem;
+    margin-top: 3rem;
 }
 
 h3 {
@@ -26,7 +26,7 @@ h3 {
 p {
     font-size: 1rem;
     color: #da5899;
-    margin-top: 1rem;
+    margin-top: 0rem;
     line-height: 1.5;
     max-width: 600px; /* Beperk de tekstbreedte */
     text-align: center;
@@ -37,18 +37,15 @@ p {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 70%; /* Kleinere breedte */
+    width: 90%; /* Kleinere breedte */
     margin-top: 3rem;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem; /* Minder padding */
+  
 }
 
 .products {
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* Display 4 columns */
-    gap: 20px;
+    gap: 40px;
     margin-top: 20px;
 }
 
@@ -61,7 +58,7 @@ p {
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
+    padding: 1.2rem 1rem;
     width: 100%;
 }
 
@@ -103,20 +100,25 @@ p {
     font-size: 1rem;
 }
 
-a .add {
+a.add {
     color: #ff87b1;
     background-color: #ffffff;
     padding: 0.7rem 1.2rem;
-    border: none;
+    border: 1px solid #ff8bb4;
     border-radius: 5px;
     text-decoration: none;
     font-size: 1rem;
     display: inline-block;
-    margin-top: 20px;}   
+    margin-top: 20px;
+}
 
-.add:hover {
+a.add:hover {
     background-color: #ff8bb4;
     color: white;
+}
+
+.product-description .add {
+    color: #ff8bb4;
 }
 
 /* Responsieve aanpassingen voor kleinere schermen */
