@@ -98,8 +98,9 @@ $conn->close();
                         <tr>
                             <td class="product-info">
                                 <img src="<?php echo $item['image_url']; ?>" alt="Product Image">
-                                <?php echo htmlspecialchars($item['color_name']) . " - " . htmlspecialchars($item['color_number']); ?>
+                                <span><?php echo htmlspecialchars($item['color_name']) . " - " . htmlspecialchars($item['color_number']); ?></span>
                             </td>
+
                             <td>€<?php echo number_format($item['price'], 2); ?></td>
                             <td><?php echo $item['quantity']; ?></td>
                             <td>€<?php echo number_format($itemTotal, 2); ?></td>
@@ -126,7 +127,6 @@ $conn->close();
         <?php endif; ?>
     </div>
 
-    <?php include_once('footer.php'); ?>
 
 </body>
 </html>
