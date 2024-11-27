@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+// Include de Review class
+include_once('classes/Review.php');
+
 if ($_SESSION['loggedin'] !== true) {
     header('Location: login.php');
     exit();
@@ -10,8 +13,6 @@ $conn = new mysqli('localhost', 'root', '', 'shop');
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-
-
 
 $email = $_SESSION['email'];
 $userStatement = $conn->prepare('SELECT * FROM users WHERE email = ?');
@@ -33,14 +34,8 @@ if ($product_id) {
     $product = $result->fetch_assoc(); // Verkrijg het product
 
     if ($product) {
-        // Haal de reviews voor dit product op
-        $reviewStmt = $conn->prepare("SELECT reviews.text, users.email, reviews.created_at FROM review AS reviews 
-                                      JOIN users ON reviews.users_id = users.id 
-                                      WHERE reviews.products_id = ?");
-        $reviewStmt->bind_param("i", $product_id);
-        $reviewStmt->execute();
-        $reviewResult = $reviewStmt->get_result();
-        $reviews = $reviewResult->fetch_all(MYSQLI_ASSOC); // Haal alle reviews op
+        // Gebruik de Review class om de reviews op te halen
+        $reviews = Review::getReviewsByProductId($product_id);
     }
 }
 
@@ -77,15 +72,14 @@ $conn->close();
     </div>
     <div class="reviews-section">
         <h2>Reviews</h2>
-    
+
         <!-- Formulier om review in te vullen -->
         <form id="review-form">
-    <div class="review-input-container">
-        <input type="text" name="review" id="review" placeholder="Write a review" required>
-        <button type="submit">Submit</button>
-    </div>
-</form>
-
+            <div class="review-input-container">
+                <input type="text" name="review" id="review" placeholder="Write a review" required>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
 
         <!-- Reviews weergeven -->
         <div class="reviews-list">
@@ -106,35 +100,6 @@ $conn->close();
 <?php else: ?>
     <p>Product niet gevonden.</p>
 <?php endif; ?>
-
-<script>
-    // Selecteer de "Add to cart" knop
-    document.querySelector('.add').addEventListener('click', function () {
-        const productId = this.dataset.productId;
-        console.log('product ID:', productId); // Log voor debuggen
-
-        // Verstuur het product-ID naar de server
-        fetch('add_to_cart.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ product_id: productId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Product added to cart!');
-            } else {
-                alert('Failed to add product. ' + data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Something went wrong.');
-        });
-    });
-</script>
 
 <script>
     document.getElementById('review-form').addEventListener('submit', function (e) {
@@ -160,11 +125,10 @@ $conn->close();
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-
                 const noReviewsText = document.querySelector('.reviews-list p');
-            if (noReviewsText && noReviewsText.textContent === 'No reviews yet.') {
-                noReviewsText.remove();
-            }
+                if (noReviewsText && noReviewsText.textContent === 'No reviews yet.') {
+                    noReviewsText.remove();
+                }
                 // Voeg de nieuwe review toe aan de lijst
                 const reviewsList = document.querySelector('.reviews-list');
                 const newReview = `
@@ -186,7 +150,6 @@ $conn->close();
         });
     });
 </script>
-
 
 </body>
 </html>

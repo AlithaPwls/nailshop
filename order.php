@@ -95,7 +95,7 @@ if ($user && $user['currency'] >= $total) {
             </table>
 
             <div class="order-total">
-                <p><strong>Total Price incl. shipping: €<?php echo number_format($orderTotal, 2); ?></strong></p>
+                <p><strong>Total Price incl. shipping: €<?php echo number_format($orderTotal + 4.95, 2); ?></strong></p>
             </div>
         <?php endif; ?>
     </div>
