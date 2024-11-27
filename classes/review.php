@@ -1,9 +1,10 @@
 <?php
+include_once("Db.php");
+
 class Review {
     private $text;
     private $product_id;
     private $user_id;
-    private $created_at;
 
     public function __construct($text, $product_id, $user_id) {
         $this->text = $text;
@@ -12,49 +13,38 @@ class Review {
     }
 
     public function save() {
-        // Maak verbinding met de database
-        $conn = new mysqli('localhost', 'root', '', 'shop');
-        if ($conn->connect_error) {
-            throw new Exception("Connection failed: " . $conn->connect_error);
-        }
+        $conn = Db::getConnection();
+        $stmt = $conn->prepare("
+            INSERT INTO review (text, products_id, users_id, created_at) 
+            VALUES (:text, :product_id, :user_id, NOW())
+        ");
+        $stmt->bindValue(':text', $this->text, PDO::PARAM_STR);
+        $stmt->bindValue(':product_id', $this->product_id, PDO::PARAM_INT);
+        $stmt->bindValue(':user_id', $this->user_id, PDO::PARAM_INT);
 
-        // Voeg de review toe aan de database
-        $stmt = $conn->prepare("INSERT INTO review (products_id, users_id, text, created_at) VALUES (?, ?, ?, NOW())");
-        $stmt->bind_param('iis', $this->product_id, $this->user_id, $this->text);
         if (!$stmt->execute()) {
-            throw new Exception("Failed to save review.");
+            throw new Exception("Failed to save the review.");
         }
 
-        $this->created_at = date("d-m-Y", strtotime('now')); // Date when review is added
-
-        $conn->close();
+        return [
+            'text' => htmlspecialchars($this->text),
+            'created_at' => date("Y-m-d H:i:s"),
+        ];
     }
 
-    public function getCreatedAt() {
-        return $this->created_at;
-    }
-
-    // Methode om reviews op te halen op basis van product-ID
     public static function getReviewsByProductId($product_id) {
-        $conn = new mysqli('localhost', 'root', '', 'shop');
-        if ($conn->connect_error) {
-            throw new Exception("Connection failed: " . $conn->connect_error);
-        }
-
-        $stmt = $conn->prepare("SELECT review.text, review.created_at, users.email FROM review 
-                                INNER JOIN users ON review.users_id = users.id
-                                WHERE review.products_id = ?");
-        $stmt->bind_param('i', $product_id);
+        $conn = Db::getConnection();
+        $stmt = $conn->prepare("
+            SELECT r.text, r.created_at, u.email 
+            FROM review r 
+            INNER JOIN users u ON r.users_id = u.id 
+            WHERE r.products_id = :product_id 
+            ORDER BY r.created_at DESC
+        ");
+        $stmt->bindValue(':product_id', $product_id, PDO::PARAM_INT);
         $stmt->execute();
-        $result = $stmt->get_result();
 
-        $reviews = [];
-        while ($row = $result->fetch_assoc()) {
-            $reviews[] = $row;
-        }
-
-        $conn->close();
-        return $reviews;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>

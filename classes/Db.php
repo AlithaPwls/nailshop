@@ -6,13 +6,16 @@
         public static function getConnection(){
             //aanroepen met Db::getConnection();
             if( self::$conn == null){
-                echo "🔥";
                 self::$conn = new PDO ('mysql:host=localhost;dbname=shop', 'root', '');
                 return self::$conn;
             }
             else {
-                echo "🦄";
                 return self::$conn;
             }
         }
     }
+
+
+
+
+ 

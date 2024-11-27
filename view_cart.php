@@ -1,60 +1,40 @@
 <?php
 session_start();
 
+// Controleer of de gebruiker is ingelogd
 if ($_SESSION['loggedin'] !== true) {
     header('Location: login.php');
     exit();
 }
+include_once (__DIR__ . "/classes/User.php");
+include_once (__DIR__ . "/classes/Cart.php");
+include_once 'classes/User.php';
+include_once 'classes/Cart.php';
 
-$conn = new mysqli('localhost', 'root', '', 'shop');
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Haal de gebruiker op via de User-class
+$user = User::getByEmail($_SESSION['email']);
+if (!$user) {
+    echo "User not found.";
+    exit();
 }
 
-$email = $_SESSION['email'];
-$userStatement = $conn->prepare('SELECT * FROM users WHERE email = ?');
-$userStatement->bind_param('s', $email);
-$userStatement->execute();
-$userResult = $userStatement->get_result();
-$user = $userResult->fetch_assoc(); // Verkrijg de gebruiker
-
-// Haal de user ID op
-$user_id = $_SESSION['user_id'];
+// Haal de producten in de winkelwagen op via de Cart-class
+$cartItems = Cart::getCartItemsByUserId($user['id']);
 
 // Verwijder product als de verwijderknop is ingedrukt
 if (isset($_POST['remove_product'])) {
     $product_id = $_POST['remove_product'];
 
-    // Verwijder het product uit de winkelwagen
-    $stmt = $conn->prepare("DELETE FROM cart WHERE user_id = ? AND product_id = ?");
-    $stmt->bind_param('ii', $user_id, $product_id);
-
-    if ($stmt->execute()) {
+    // Verwijder het product uit de winkelwagen via de Cart-class
+    if (Cart::removeProductFromCart($user['id'], $product_id)) {
         // Refresh de pagina om de verwijdering te verwerken
         header('Location: view_cart.php');
         exit();
     } else {
-        echo "Error: " . $conn->error;
+        echo "Error: Could not remove product.";
     }
 }
 
-// Haal de producten in de winkelwagen van de gebruiker op
-$sql = "SELECT p.id, p.color_name, p.color_number, p.price, p.image_url, c.quantity 
-        FROM cart AS c
-        JOIN products AS p ON c.product_id = p.id
-        WHERE c.user_id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param('i', $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-
-// Products ophalen
-$cartItems = [];
-while ($row = $result->fetch_assoc()) {
-    $cartItems[] = $row;
-}
-// Sluit de databaseverbinding
-$conn->close();
 ?>
 
 <!DOCTYPE html>

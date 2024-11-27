@@ -1,52 +1,61 @@
 <?php
 session_start();
 
-// Maak verbinding met de database
-$conn = new mysqli('localhost', 'root', '', 'shop');
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+include_once (__DIR__ . "/classes/Order.php");
+include_once (__DIR__ . "/classes/Cart.php");
+include_once (__DIR__ . "/classes/User.php");
+
+
+// Controleer of de gebruiker is ingelogd
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: login.php');
+    exit();
 }
 
-// Verkrijg de user_id van de ingelogde gebruiker
 $user_id = $_SESSION['user_id'];
 
-// Haal de winkelwagenitems op uit de sessie
+// Haal de winkelwagenitems en totaal op
 $cartItems = isset($_SESSION['cart_items']) ? $_SESSION['cart_items'] : [];
 $total = isset($_POST['cart_total']) ? $_POST['cart_total'] : 0;
 
-// Haal de huidige currency van de gebruiker op
-$query = "SELECT currency FROM users WHERE id = ?";
-$stmt = $conn->prepare($query);
-$stmt->bind_param('i', $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$user = $result->fetch_assoc();
+// Haal de gebruiker op uit de database
+$user = User::getById($user_id);
 
-// Als de gebruiker voldoende currency heeft, verwerk de bestelling
 if ($user && $user['currency'] >= $total) {
     // Verminder de currency van de gebruiker
     $newCurrency = $user['currency'] - $total;
 
-    // Update de currency in de database
-    $updateQuery = "UPDATE users SET currency = ? WHERE id = ?";
-    $stmt = $conn->prepare($updateQuery);
-    $stmt->bind_param('di', $newCurrency, $user_id);
-    if ($stmt->execute()) {
-        // Winklewagenitems verwijderen na succesvolle betaling
-        $clearCartQuery = "DELETE FROM cart WHERE user_id = ?";
-        $stmt = $conn->prepare($clearCartQuery);
-        $stmt->bind_param('i', $user_id);
-        $stmt->execute();
-        
-        echo "<p>Your order has been processed, and your balance has been updated. 🩷</p>";
+    if (User::updateCurrency($user_id, $newCurrency)) {
+        // Zet winkelwagenitems om naar JSON
+        $products = [];
+        foreach ($cartItems as $item) {
+            $products[] = [
+                'product_id' => $item['id'],
+                'name' => $item['color_name'],
+                'price' => $item['price'],
+                'quantity' => $item['quantity'],
+                'total_price' => $item['price'] * $item['quantity'],
+                'image_url' => $item['image_url']
+            ];
+        }
+
+        // Maak de bestelling aan
+        if (Order::createOrder($user_id, $total, $products)) {
+            // Verwijder de winkelwagenitems
+            Cart::clearCartByUserId($user_id);
+            $orderProcessed = true;
+        } else {
+            $error = "Error saving order. Please try again.";
+        }
     } else {
-        echo "<p>Error updating currency: " . $conn->error . "</p>";
+        $error = "Error updating currency. Please try again.";
     }
 } else {
-    echo "<p>Insufficient funds. Please add more funds to your account.</p>";
+    $error = "Insufficient funds. Please add more funds to your account.";
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,46 +66,46 @@ if ($user && $user['currency'] >= $total) {
 </head>
 <body>
     <?php include_once('nav.inc.php'); ?>
-    
+
     <div class="order-container">
-        <h1>Thank you for ordering at Pink Gellac!</h1>
-        <p>Your order is being processed. We'll notify you once it's ready.</p>
-        
-        <?php if (empty($cartItems)): ?>
-            <p>Your order is empty.</p>
-        <?php else: ?>
+        <?php if (isset($orderProcessed) && $orderProcessed): ?>
+            <h1>Thank you for your order! 🩷</h1>
+            <h3>Here are the details of your purchase:</h3>
+
             <table>
                 <thead>
                     <tr>
                         <th>Product</th>
+                        <th>Color Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    $orderTotal = 0;
-                    foreach ($cartItems as $item):
-                        $itemTotal = $item['price'] * $item['quantity'];
-                        $orderTotal += $itemTotal;
-                    ?>
-                    <tr>
-                        <td class="product-info">
-                            <img src="<?php echo $item['image_url']; ?>" alt="Product Image">
-                            <span><?php echo htmlspecialchars($item['color_name']) . " - " . htmlspecialchars($item['color_number']); ?></span>
-                        </td>
-                        <td>€<?php echo number_format($item['price'], 2); ?></td>
-                        <td><?php echo $item['quantity']; ?></td>
-                        <td>€<?php echo number_format($itemTotal, 2); ?></td>
-                    </tr>
+                    <?php foreach ($products as $product): ?>
+                        <tr>
+                            <td>
+                                <img src="<?= htmlspecialchars($product['image_url']) ?>" alt="Product Image" style="width: 100px; height: auto;">
+                            </td>
+                            <td><?= htmlspecialchars($product['name']) ?></td>
+                            <td>€<?= number_format($product['price'], 2) ?></td>
+                            <td><?= htmlspecialchars($product['quantity']) ?></td>
+                            <td>€<?= number_format($product['total_price'], 2) ?></td>
+                        </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
 
-            <div class="order-total">
-                <p><strong>Total Price incl. shipping: €<?php echo number_format($orderTotal + 4.95, 2); ?></strong></p>
+            <div class="order-summary">
+                <p><strong>Shipping Cost:</strong> €4.95</p>
+                <p><strong>Total:</strong> €<?= number_format($total + 4.95, 2) ?></p>
             </div>
+
+            <h3>You'll get notified when your package is on its way!</h3>
+        <?php else: ?>
+            <h1>Error</h1>
+            <p><?= htmlspecialchars($error) ?></p>
         <?php endif; ?>
     </div>
 </body>

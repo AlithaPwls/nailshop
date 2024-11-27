@@ -6,19 +6,13 @@ if ($_SESSION['loggedin'] !== true) {
     exit();
 }
 
-include_once 'classes/products.php';
-
-$conn = new mysqli('localhost', 'root', '', 'shop');
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include_once (__DIR__ . "/classes/products.php");
+include_once (__DIR__ . "/classes/User.php"); // Zorg ervoor dat de juiste klasse wordt geladen
 
 $email = $_SESSION['email'];
-$userStatement = $conn->prepare('SELECT * FROM users WHERE email = ?');
-$userStatement->bind_param('s', $email);
-$userStatement->execute();
-$userResult = $userStatement->get_result();
-$user = $userResult->fetch_assoc(); // Verkrijg de gebruiker
+$user = User::getUserByEmail($email); // Haal de gebruiker op via de juiste methode van de User-klasse
+
+include_once("classes/Db.php");
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -30,9 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $hasGlitter = isset($_POST['has_glitter']) ? 1 : 0;
         $imageUrl = htmlspecialchars($_POST['image_url'], ENT_QUOTES, 'UTF-8');
         $colorGroup = htmlspecialchars($_POST['color_group'], ENT_QUOTES, 'UTF-8');
-        $colorDescription = htmlspecialchars($_POST['color_description'], ENT_QUOTES, 'UTF-8'); // hier wast fout
+        $colorDescription = htmlspecialchars($_POST['color_description'], ENT_QUOTES, 'UTF-8');
 
-        // Opslaan in de database
+        // Maak een nieuw Product-object en sla het op
         $product = new Product();
         $product->setColorName($colorName);
         $product->setColorNumber($colorNumber);
@@ -48,7 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Fout: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
     }
 }
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -77,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="field">
             <label for="has_glitter">Has glitter:</label>
-            <input type="checkbox" id="has_glitter" name="has_glitter" value = "1">
+            <input type="checkbox" id="has_glitter" name="has_glitter" value="1">
         </div>
 
         <div class="field">

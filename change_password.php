@@ -1,11 +1,13 @@
 <?php
 session_start();
+
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("Location: login.php");
     exit;
 }
 
-$conn = new PDO('mysql:host=localhost;dbname=shop', 'root', '');
+include_once (__DIR__ . "/classes/User.php"); // Zorg ervoor dat de juiste klasse wordt geladen
+
 $email = $_SESSION['email'];
 
 if (!empty($_POST)) {
@@ -13,25 +15,15 @@ if (!empty($_POST)) {
     $new_password = $_POST['new_password'];
     $confirm_password = $_POST['confirm_password'];
 
-    // Haal het huidige wachtwoord uit de database
-    $statement = $conn->prepare("SELECT password FROM users WHERE email = :email");
-    $statement->bindValue(':email', $email);
-    $statement->execute();
-    $user = $statement->fetch(PDO::FETCH_ASSOC);
+    // Haal het huidige wachtwoord uit de database via de User-klasse
+    $current_password = User::getPasswordByEmail($email);
 
     // Controleer of het oude wachtwoord correct is
-    if (password_verify($old_password, $user['password'])) {
+    if ($current_password && password_verify($old_password, $current_password)) {
         // Controleer of het nieuwe wachtwoord twee keer hetzelfde is
         if ($new_password === $confirm_password) {
-            // Hash het nieuwe wachtwoord en sla het op
-            $options = ['cost' => 12];
-            $new_hash = password_hash($new_password, PASSWORD_DEFAULT, $options);
-
-            $update = $conn->prepare("UPDATE users SET password = :password WHERE email = :email");
-            $update->bindValue(':password', $new_hash);
-            $update->bindValue(':email', $email);
-
-            if ($update->execute()) {
+            // Werk het wachtwoord bij via de User-klasse
+            if (User::updatePassword($email, $new_password)) {
                 $success = "Your password has been successfully updated!";
             } else {
                 $error = "An error occurred. Please try again.";
@@ -51,7 +43,6 @@ if (!empty($_POST)) {
     <meta charset="UTF-8">
     <title>Change Password</title>
     <link rel="stylesheet" href="css/change_password.css">
-
 </head>
 <body>
     <?php include_once('nav.inc.php'); ?>

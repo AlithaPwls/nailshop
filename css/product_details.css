@@ -1,3 +1,4 @@
+/* Algemeen */
 body {
     font-family: Georgia, 'Times New Roman', Times, serif;
     background-color: #ffe6f2;
@@ -7,171 +8,156 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 5em;
 }
 
-h1 {
-    color: #ff8bb4;
-    font-size: 1.75rem; /* Kleinere header */
-    margin-top: 2rem;
-}
-
-h3 {
-    color: #da5899;
-    font-size: 1.25rem; /* Kleinere prijs */
-}
-
-p {
-    font-size: 1rem;
-    color: #da5899;
-    margin-top: 1rem;
-    line-height: 1.5;
-    max-width: 600px; /* Beperk de tekstbreedte */
-    text-align: center;
-}
-
+/* Container voor productdetails */
 .product-details {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     align-items: flex-start;
-    width: 60%; /* Kleinere breedte */
-    margin-top: 3rem;
+    width: 70%;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem; /* Minder padding */
+    padding: 1.5rem;
+    margin-top: 3rem;
 }
 
-.product-info {
-    display: flex;
-    flex-direction: row;
-    gap: 20px; /* Ruimte tussen afbeelding en tekst */
-    align-items: flex-start;
-    text-align: left;
-    width: 100%;
-}
-
+/* Afbeelding links */
 .product-image img {
-    width: 350px; /* Specifieke breedte voor de afbeelding */
+    width: 300px;
     height: auto;
     border-radius: 10px;
     margin-right: 20px;
 }
 
-.product-description {
+/* Informatie rechts */
+.product-info {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-    width: 100%;
-    justify-content: flex-start; /* Add this line to align the text to the left */
-}
-
-.product-description p {
+    justify-content: flex-start;
     text-align: left;
 }
 
-button.add,
-.edit-product-btn{
+/* Stijl voor de tekst en prijs */
+.product-info h1 {
+    color: #ff8bb4;
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+}
+
+.product-info p {
+    font-size: 1rem;
+    color: #da5899;
+    margin-bottom: 1.5rem;
+}
+
+/* Knoppen naast elkaar */
+.product-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+button.add-to-cart,
+.admin-btn {
     background-color: #ffffff;
     color: #ff8bb4;
     border: 1px solid #ff8bb4;
-    padding: 0.5rem 2rem;
+    padding: 0.5rem 1.5rem;
     border-radius: 5px;
     cursor: pointer;
-    text-decoration: none;
-    margin-top: 1rem;
     font-size: 1rem;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
 }
 
-.edit-product-btn {
-    margin-left: 200px;
-    margin-top: -37px;
-}
-
-button.add:hover {
+button.add-to-cart:hover,
+.admin-btn:hover {
     background-color: #ff8bb4;
     color: white;
 }
 
 .reviews-section {
-    margin-left: 0; /* Verwijder de negatieve marge */
-    width: 60%; /* Zorg ervoor dat het dezelfde breedte heeft als .product-details */
-    margin-top: 2rem; /* Voeg wat ruimte toe boven de reviews sectie */
+    margin-top: 20px;
 }
 
-/* Stijl voor de reviews-sectie */
-.reviews-list {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Display 4 columns */
-    gap: 20px; /* Space between the reviews */
+#review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#review-text {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#review-form button {
+    align-self: flex-start;
+    background-color: #ff8bb4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#review-form button:hover {
+    background-color: #e6005c;
 }
 
 .review-item {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
-    text-align: left;
-    width: 80%; /* Zorg ervoor dat de reviews naast elkaar komen */
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
 }
 
 .review-item h4 {
+    font-size: 16px;
+    margin: 0;
     color: #f280a8;
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-    margin-top: 0.5em;
+}
+
+.review-item small {
+    color: #888;
+    font-size: 12px;
 }
 
 .review-item p {
-    color: #da5899;
-    font-size: 1rem;
+    font-size: 14px;
+    margin: 5px 0;
+    color: #333;
 }
 
-.review-input-container {
-    display: flex;
-    gap: 10px; /* Ruimte tussen het invulveld en de knop */
-    width: 80%; /* Zorg ervoor dat de elementen niet de hele breedte nemen */
-    margin-bottom: 1rem;
-}
 
-form input {
-    padding: 0.5rem;
-    border: 1px solid #f280a8;
-    border-radius: 5px;
-    flex-grow: 1; /* Laat het invoerveld de beschikbare ruimte vullen */
-}
-
-form button {
-    padding: 0.5rem 2rem;
-    border: none;
-    background-color: #ff8bb4;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-form button:hover {
-    background-color: #da5899;
-}
-/* Responsieve aanpassingen voor kleinere schermen */
+/* Responsief ontwerp */
 @media screen and (max-width: 900px) {
     .product-details {
-        width: 85%; /* Kleinere breedte op kleinere schermen */
-    }
-
-    .product-info {
         flex-direction: column;
-        align-items: center;
+        width: 90%;
     }
 
     .product-image img {
         width: 100%;
-        max-width: 350px; /* Kleinere afbeelding op kleinere schermen */
+        max-width: 300px;
+        margin: 0 auto 20px;
     }
 
-    .review-item {
-        width: 100%; /* Op kleinere schermen komt elke review op een nieuwe regel */
+    .product-info {
+        text-align: center;
+    }
+
+    .product-buttons {
+        flex-direction: column;
+        align-items: center;
     }
 }
