@@ -1,11 +1,52 @@
 <?php
 session_start();
 
+// Maak verbinding met de database
+$conn = new mysqli('localhost', 'root', '', 'shop');
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Verkrijg de user_id van de ingelogde gebruiker
+$user_id = $_SESSION['user_id'];
+
 // Haal de winkelwagenitems op uit de sessie
 $cartItems = isset($_SESSION['cart_items']) ? $_SESSION['cart_items'] : [];
 $total = isset($_POST['cart_total']) ? $_POST['cart_total'] : 0;
-?>
 
+// Haal de huidige currency van de gebruiker op
+$query = "SELECT currency FROM users WHERE id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param('i', $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+
+// Als de gebruiker voldoende currency heeft, verwerk de bestelling
+if ($user && $user['currency'] >= $total) {
+    // Verminder de currency van de gebruiker
+    $newCurrency = $user['currency'] - $total;
+
+    // Update de currency in de database
+    $updateQuery = "UPDATE users SET currency = ? WHERE id = ?";
+    $stmt = $conn->prepare($updateQuery);
+    $stmt->bind_param('di', $newCurrency, $user_id);
+    if ($stmt->execute()) {
+        // Winklewagenitems verwijderen na succesvolle betaling
+        $clearCartQuery = "DELETE FROM cart WHERE user_id = ?";
+        $stmt = $conn->prepare($clearCartQuery);
+        $stmt->bind_param('i', $user_id);
+        $stmt->execute();
+        
+        echo "<p>Your order has been processed, and your balance has been updated. 🩷</p>";
+    } else {
+        echo "<p>Error updating currency: " . $conn->error . "</p>";
+    }
+} else {
+    echo "<p>Insufficient funds. Please add more funds to your account.</p>";
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
