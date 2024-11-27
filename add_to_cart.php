@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+include_once (__DIR__ . "/classes/cart.php");
+
 // Controleer of de gebruiker is ingelogd
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'error' => 'You must be logged in.']);
@@ -16,26 +18,12 @@ if (!$product_id) {
     exit;
 }
 
-// Databaseverbinding
-$conn = new mysqli('localhost', 'root', '', 'shop');
-if ($conn->connect_error) {
-    echo json_encode(['success' => false, 'error' => 'Database connection failed.']);
-    exit;
-}
-
 $user_id = $_SESSION['user_id'];
 
-// Voeg het product toe aan het winkelmandje
-$stmt = $conn->prepare("INSERT INTO cart (user_id, product_id) VALUES (?, ?)");
-$stmt->bind_param("ii", $user_id, $product_id);
-
-if ($stmt->execute()) {
+// Voeg het product toe aan het winkelmandje via de Cart-klasse
+if (Cart::addToCart($user_id, $product_id)) {
     echo json_encode(['success' => true]);
 } else {
     echo json_encode(['success' => false, 'error' => 'Failed to add to cart.']);
 }
-
-$stmt->close();
-$conn->close();
-
 ?>

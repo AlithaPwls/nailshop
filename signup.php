@@ -1,44 +1,37 @@
 <?php
 session_start(); // Zorg ervoor dat je sessies gebruikt
 
-// wacht op gebruiker
+include_once (__DIR__ . "/classes/User.php");
+
 if(!empty($_POST)){
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
     $email = $_POST['email'];
     $password = $_POST['password'];
     
-    $options = [
-        'cost' => 12,
-    ];
-
-    $hash = password_hash($password, PASSWORD_DEFAULT, $options); 
-    $conn = new PDO('mysql:host=localhost;dbname=shop', 'root', '');
-
     // Controleer of het e-mailadres al bestaat
-    $checkEmail = $conn->prepare('SELECT * FROM users WHERE email = :email');
-    $checkEmail->bindValue(':email', $email);
-    $checkEmail->execute();
-
-    if ($checkEmail->rowCount() > 0) {
+    if (User::checkIfEmailExists($email)) {
         // Het e-mailadres bestaat al
         $error = "This email is already in use. Please sign up with a different email.";
     } else {
         // E-mailadres bestaat niet, dus we kunnen de gebruiker registreren
-        $statement = $conn->prepare('INSERT INTO users (firstname, lastname, email, password) VALUES (:firstname, :lastname, :email, :password)');
-        $statement->bindValue(':firstname', $firstname);
-        $statement->bindValue(':lastname', $lastname);
-        $statement->bindValue(':email', $email);
-        $statement->bindValue(':password', $hash);
+        if (User::registerNewUser($firstname, $lastname, $email, $password)) {
+            // Haal de gebruiker op basis van het e-mailadres
+            $user = User::getUserByEmail($email);
 
-        if($statement->execute()){
-            // Als de registratie succesvol is, sla de gebruikersinformatie op in de sessie
-            $_SESSION['loggedin'] = true;
-            $_SESSION['email'] = $email; // Je kunt hier ook andere gebruikersinformatie opslaan
+            if ($user) {
+                // Sla de user_id op in de sessie
+                $_SESSION['loggedin'] = true;
+                $_SESSION['email'] = $email;
+                $_SESSION['user_id'] = $user['id'];  // Sla de user_id op in de sessie
 
-            // Redirect naar index.php
-            header('Location: index.php');
-            exit; // Zorg ervoor dat je het script stopt na de redirect
+                // Redirect naar index.php
+                header('Location: index.php');
+                exit; // Zorg ervoor dat je het script stopt na de redirect
+            } else {
+                // Foutmelding als de gebruiker niet wordt gevonden
+                $error = "User not found.";
+            }
         } else {
             // Als de registratie mislukt, kun je hier een foutmelding geven
             $error = "There was an error with your signup. Please try again.";

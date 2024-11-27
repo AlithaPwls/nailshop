@@ -1,11 +1,19 @@
 <?php
+// Zorg ervoor dat de Product-klasse geladen wordt
+
+
+include_once (__DIR__ . "/classes/Products.php");
+
+
+
+// De rest van je code blijft hetzelfde
 session_start();
 if ($_SESSION['loggedin'] !== true || (int)$_SESSION['is_admin'] !== 1) {
     header('Location: login.php');
     exit();
 }
 
-$product_id = $_GET['id'] ?? null; // Haal de ID uit de URL
+$product_id = $_GET['id'] ?? null;
 $product = [
     'id' => '',
     'color_name' => '',
@@ -18,23 +26,12 @@ $product = [
 ];
 
 if ($product_id) {
-    // Haal productdata op uit de database
-    $conn = new mysqli('localhost', 'root', '', 'shop');
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    $stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
-    $stmt->bind_param("i", $product_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $product = $result->fetch_assoc() ?: $product;
-    $conn->close();
+    // Haal productdata op uit de database via de Product::getById() methode
+    $product = Product::getById($product_id) ?: $product;
 }
 
-?>
 
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -76,8 +73,15 @@ if ($product_id) {
         </div>
 
         <div class="field">
-            <label for="color_group">Color Group:</label>
-            <input type="text" name="color_group" value="<?php echo htmlspecialchars($product['color_group']); ?>" required>
+            <label for="color_group">Color group:</label>
+                <select id="color_group" name="color_group" required>
+                    <option value="" disabled selected>Kies een kleur groep</option>
+                    <option value="pink" <?php echo $product['color_group'] == 'pink' ? 'selected' : ''; ?>>Pink</option>
+                    <option value="red" <?php echo $product['color_group'] == 'red' ? 'selected' : ''; ?>>Red</option>
+                    <option value="green" <?php echo $product['color_group'] == 'green' ? 'selected' : ''; ?>>Green</option>
+                    <option value="blue" <?php echo $product['color_group'] == 'blue' ? 'selected' : ''; ?>>Blue</option>
+                    <option value="brown" <?php echo $product['color_group'] == 'brown' ? 'selected' : ''; ?>>Brown</option>
+                </select>
         </div>
 
         <div class="field">
@@ -108,45 +112,38 @@ if (isset($_POST['update_product'])) {
     $color_group = $_POST['color_group'];
     $description = $_POST['color_description'];
 
-    // Verbind met de database en werk het product bij
-    $conn = new mysqli('localhost', 'root', '', 'shop');
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+    // Maak een nieuw productobject en werk bij
+    $product = new Product();
+    $product->setId($id);
+    $product->setColorName($color_name);
+    $product->setColorNumber($color_number);
+    $product->setPrice($price);
+    $product->setHasGlitter($has_glitter);
+    $product->setImageUrl($image_url);
+    $product->setColorGroup($color_group);
+    $product->setColorDescription($description);
 
-    $stmt = $conn->prepare("UPDATE products SET color_name = ?, color_number = ?, price = ?, has_glitter = ?, image_url = ?, color_group = ?, description = ? WHERE id = ?");
-    $stmt->bind_param("sssisssi", $color_name, $color_number, $price, $has_glitter, $image_url, $color_group, $description, $id);
-
-    if ($stmt->execute()) {
+    // Werk het product bij
+    if ($product->update()) {
         // Redirect naar product detail pagina na update
         header("Location: product_details.php?id=$id");
         exit();
     } else {
-        echo "Error: " . $conn->error;
+        echo "Error: Product could not be updated.";
     }
-    $conn->close();
 }
 
 // Delete product
 if (isset($_POST['delete_product'])) {
     $id = intval($_POST['id']);
 
-    // Verbind met de database en verwijder het product
-    $conn = new mysqli('localhost', 'root', '', 'shop');
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    $stmt = $conn->prepare("DELETE FROM products WHERE id = ?");
-    $stmt->bind_param("i", $id);
-
-    if ($stmt->execute()) {
+    // Verwijder het product
+    if (Product::delete($id)) {
         // Redirect naar de homepage na het verwijderen van het product
         header("Location: index.php");
         exit();
     } else {
-        echo "Error: " . $conn->error;
+        echo "Error: Product could not be deleted.";
     }
-    $conn->close();
 }
 ?>

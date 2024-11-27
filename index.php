@@ -1,39 +1,43 @@
 <?php
+session_start();  // Zorg ervoor dat de sessie eerst wordt gestart
 
-session_start();
-if ($_SESSION['loggedin'] !== true) {
-    header('Location: login.php');
-    exit();
+// Laad de benodigde klassen
+include_once (__DIR__ . "/classes/User.php");
+include_once (__DIR__ . "/classes/Db.php");
+
+// Controleer of de gebruiker is ingelogd en of de user_id beschikbaar is in de sessie
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+    // Controleer of de 'user_id' in de sessie bestaat
+    if (isset($_SESSION['user_id'])) {
+        // Haal de user_id uit de sessie
+        $user_id = $_SESSION['user_id'];
+
+        // Haal de gebruikersinformatie op op basis van de user_id
+        $user = User::getById($user_id);  // Dit moet werken, omdat we de user_id nu in de sessie hebben
+
+    
+    } else {
+        echo "No user logged in.";
+    }
+} else {
+    echo "You are not logged in.";
 }
 
-$conn = new mysqli('localhost', 'root', '', 'shop');
+// Verbind met de database voor productgegevens
+$conn = Db::getConnection();
 
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-$email = $_SESSION['email'];
-$userStatement = $conn->prepare('SELECT * FROM users WHERE email = ?');
-$userStatement->bind_param('s', $email);
-$userStatement->execute();
-$userResult = $userStatement->get_result();
-$user = $userResult->fetch_assoc(); // Verkrijg de gebruiker
-
-// Kleurtjes willekeurig rangschikken
+// Haal willekeurige producten op
 $sql = "SELECT * FROM products ORDER BY RAND()";
 $result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
-    $products = $result->fetch_all(MYSQLI_ASSOC);
+if ($result->rowCount() > 0) {
+    $products = $result->fetchAll(PDO::FETCH_ASSOC);
 } else {
     $products = [];
 }
-$conn->close();
 
 // Controleer of een kleurcategorie of glitter is geselecteerd
 $colorgroup = $_GET['color_group'] ?? 'all';
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +45,7 @@ $colorgroup = $_GET['color_group'] ?? 'all';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/index.css">
-    <title>Nail shop</title>
+    <title>Nail Shop</title>
 </head>
 <body>
     <?php include_once('nav.inc.php'); ?>
@@ -52,45 +56,42 @@ $colorgroup = $_GET['color_group'] ?? 'all';
 
     <div class="filters">
         <span>Categories:</span>
-        <a href="?color_group=all" class="filter-btn <?php echo ($colorgroup === 'all') ? 'active' : ''; ?>">All</a>
-        <a href="?color_group=pink" class="filter-btn <?php echo ($colorgroup === 'pink') ? 'active' : ''; ?>">Pink</a>
-
-        <a href="?color_group=red" class="filter-btn <?php echo ($colorgroup === 'red') ? 'active' : ''; ?>">Red</a>
-        <a href="?color_group=green" class="filter-btn <?php echo ($colorgroup === 'green') ? 'active' : ''; ?>">Green</a>
-        <a href="?color_group=blue" class="filter-btn <?php echo ($colorgroup === 'blue') ? 'active' : ''; ?>">Blue</a>
-        <a href="?color_group=brown" class="filter-btn <?php echo ($colorgroup === 'brown') ? 'active' : ''; ?>">Brown</a>
-        <a href="?color_group=glitter" class="filter-btn glitter-btn <?php echo ($colorgroup === 'glitter') ? 'active' : ''; ?>">Glitters</a>
+        <a href="?color_group=all" class="filter-btn <?= ($colorgroup === 'all') ? 'active' : ''; ?>">All</a>
+        <a href="?color_group=pink" class="filter-btn <?= ($colorgroup === 'pink') ? 'active' : ''; ?>">Pink</a>
+        <a href="?color_group=red" class="filter-btn <?= ($colorgroup === 'red') ? 'active' : ''; ?>">Red</a>
+        <a href="?color_group=green" class="filter-btn <?= ($colorgroup === 'green') ? 'active' : ''; ?>">Green</a>
+        <a href="?color_group=blue" class="filter-btn <?= ($colorgroup === 'blue') ? 'active' : ''; ?>">Blue</a>
+        <a href="?color_group=brown" class="filter-btn <?= ($colorgroup === 'brown') ? 'active' : ''; ?>">Brown</a>
+        <a href="?color_group=glitter" class="filter-btn glitter-btn <?= ($colorgroup === 'glitter') ? 'active' : ''; ?>">Glitters</a>
     </div>
+
     <div class="products">
-    <?php if (!empty($products)): ?>
-        <?php foreach ($products as $product): ?>
-            <?php if (
-                ($colorgroup === 'all') || 
-                ($colorgroup === $product['color_group']) || 
-                ($colorgroup === 'glitter' && $product['has_glitter']) ||
-                ($product['color_group'] === $colorgroup && $product['has_glitter'])
-            ): ?>
-                <a href="product_details.php?id=<?php echo $product['id']; ?>">
-
-                    <article>
-                        <img src="<?php echo $product['image_url']; ?>" alt="Product image">
-                        <h2><?php echo $product['color_name'] . " - " . $product['color_number']; ?></h2>
-                        <h3>€<?php echo number_format($product['price'], 2); ?></h3>
-                        <button class="add" data-product-id="<?php echo $product['id']; ?>">Add to cart</button>
+        <?php if (!empty($products)): ?>
+            <?php foreach ($products as $product): ?>
+                <?php if (
+                    ($colorgroup === 'all') || 
+                    ($colorgroup === $product['color_group']) || 
+                    ($colorgroup === 'glitter' && $product['has_glitter']) ||
+                    ($product['color_group'] === $colorgroup && $product['has_glitter'])
+                ): ?>
+                    <a href="product_details.php?id=<?= $product['id']; ?>">
+                        <article>
+                            <img src="<?= $product['image_url']; ?>" alt="Product image">
+                            <h2><?= $product['color_name'] . " - " . $product['color_number']; ?></h2>
+                            <h3>€<?= number_format($product['price'], 2); ?></h3>
+                            <button class="add" data-product-id="<?= $product['id']; ?>">Add to cart</button>
                         </article>
-                </a>
-            <?php endif; ?>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>No products found.</p>
-    <?php endif; ?>
-</div>
-
+                    </a>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No products found.</p>
+        <?php endif; ?>
     </div>
-    <footer>
-        <p>&copy; <?php echo date('Y'); ?> Nail Shop. All rights reserved.</p>
-    </footer>
 
+    <footer>
+        <p>&copy; <?= date('Y'); ?> Nail Shop. All rights reserved.</p>
+    </footer>
 
     <button id="back-to-top" onclick="scrollToTop()">⬆</button>
 
@@ -116,16 +117,13 @@ $colorgroup = $_GET['color_group'] ?? 'all';
 <script>
 document.querySelectorAll('.add').forEach(button => {
     button.addEventListener('click', function (event) {
-        event.preventDefault(); // Voorkom dat de pagina opnieuw wordt geladen bij klik
+        event.preventDefault();
 
         const productId = this.dataset.productId;
-        console.log('product ID:', productId);
 
-        // Verander de tekst van de knop naar "Added to cart"
         this.textContent = '🛒✅';
-        this.disabled = true; // Zet de knop uit zodat deze niet opnieuw aangeklikt kan worden
+        this.disabled = true;
 
-        // Verstuur het product-ID naar de server met AJAX
         fetch('add_to_cart.php', {
             method: 'POST',
             headers: {
@@ -135,7 +133,6 @@ document.querySelectorAll('.add').forEach(button => {
         })
         .then(response => response.json())
         .then(data => {
-            // Alleen tonen dat het product is toegevoegd, zonder pop-up
             if (data.success) {
                 console.log('Product added to cart!');
             } else {
@@ -148,9 +145,6 @@ document.querySelectorAll('.add').forEach(button => {
         });
     });
 });
-
-
 </script>
-
 </body>
 </html>
