@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-
 if ($_SESSION['loggedin'] !== true) {
     header('Location: login.php');
     exit();
@@ -18,8 +17,6 @@ $userStatement->bind_param('s', $email);
 $userStatement->execute();
 $userResult = $userStatement->get_result();
 $user = $userResult->fetch_assoc(); // Verkrijg de gebruiker
-
-
 
 // Haal de user ID op
 $user_id = $_SESSION['user_id'];
@@ -119,14 +116,22 @@ $conn->close();
                     <p>Shipping Cost: €4.95</p>
                     <p>Total: €<?php echo number_format($total + 4.95, 2); ?></p>
                 </div>
-
-                <div class="checkout">
-                    <a href="checkout.php">Proceed to Checkout</a>
-                </div>
             </form>
+
+            <!-- Nieuwe form voor de checkout -->
+<form action="order.php" method="POST">
+    <!-- Sla de producten en totaal op in de sessie -->
+    <input type="hidden" name="cart_total" value="<?php echo number_format($total + 4.95, 2); ?>">
+
+    <?php
+    // Sla de winkelwagenitems op in de sessie
+    $_SESSION['cart_items'] = $cartItems;
+    ?>
+
+    <button type="submit" class="checkout-btn">Proceed to Checkout</button>
+</form>
+
         <?php endif; ?>
     </div>
-
-
 </body>
 </html>

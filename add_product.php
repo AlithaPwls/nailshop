@@ -86,17 +86,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="field">
-    <label for="color_group">Color group:</label>
-    <select id="color_group" name="color_group" required>
-        <option value="" disabled selected>Kies een kleur groep</option>
-        <option value="pink">Pink</option>
-        <option value="red">Red</option>
-        <option value="green">Green</option>
-        <option value="blue">Blue</option>
-        <option value="brown">Brown</option>
-    </select>
-</div>
-
+            <label for="color_group">Color group:</label>
+                <select id="color_group" name="color_group" required>
+                    <option value="" disabled selected>Kies een kleur groep</option>
+                    <option value="pink">Pink</option>
+                    <option value="red">Red</option>
+                    <option value="green">Green</option>
+                    <option value="blue">Blue</option>
+                    <option value="brown">Brown</option>
+                </select>
+        </div>
 
         <div class="field">
             <label for="color_description">Description</label>

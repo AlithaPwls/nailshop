@@ -10,13 +10,28 @@
             <input type="text" name="search" placeholder="Search by color name or number" class="search-input">
             <button type="submit" class="search-btn">Search</button>
         </form>
-            <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']): ?>
-                <a href="add_product.php" class="nav-link">Add product</a>
-            <?php endif; ?>        
+        <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']): ?>
+            <a href="add_product.php" class="nav-link">Add product</a>
+        <?php endif; ?>        
         <a href="view_cart.php" class="cart-btn">View Cart</a>
-        <a href="#" class="navbar__currency">Currency - € <?php echo isset($user['currency']) ? number_format($user['currency'], 2, ',', '.'): '€0.00'; ?></a>
-        
-
+        <a href="#" class="navbar__currency">Currency - € 
+            <?php
+            // Haal de currency op uit de database
+            $conn = new mysqli('localhost', 'root', '', 'shop');
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+            $user_id = $_SESSION['user_id'];
+            $sql = "SELECT currency FROM users WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('i', $user_id);
+            $stmt->execute();
+            $stmt->bind_result($currency);
+            $stmt->fetch();
+            $conn->close();
+            echo number_format($currency, 2, ',', '.');
+            ?>
+        </a>
 
         <?php if (isset($_SESSION['email'])): ?>
             <a href="profile.php" class="navbar__profile">View Profile</a>

@@ -79,12 +79,13 @@ $conn->close();
         <h2>Reviews</h2>
     
         <!-- Formulier om review in te vullen -->
-        <form action="submit_review.php?id=<?php echo $product['id']; ?>" method="POST">
-            <div class="review-input-container">
-                <input type="text" name="review" placeholder="Write a review" required>
-                <button type="submit">Submit</button>
-            </div>
-        </form>
+        <form id="review-form">
+    <div class="review-input-container">
+        <input type="text" name="review" id="review" placeholder="Write a review" required>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
 
         <!-- Reviews weergeven -->
         <div class="reviews-list">
@@ -134,6 +135,58 @@ $conn->close();
         });
     });
 </script>
+
+<script>
+    document.getElementById('review-form').addEventListener('submit', function (e) {
+        e.preventDefault(); // Voorkomt het standaardformuliergedrag
+
+        const reviewInput = document.getElementById('review');
+        const reviewText = reviewInput.value.trim(); // Haal de ingevulde reviewtekst op
+        const productId = <?php echo json_encode($product_id); ?>;
+
+        if (!reviewText) {
+            alert('Please write a review before submitting.');
+            return;
+        }
+
+        // AJAX-verzoek om de review te verzenden
+        fetch('submit_review.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ product_id: productId, review: reviewText })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+
+                const noReviewsText = document.querySelector('.reviews-list p');
+            if (noReviewsText && noReviewsText.textContent === 'No reviews yet.') {
+                noReviewsText.remove();
+            }
+                // Voeg de nieuwe review toe aan de lijst
+                const reviewsList = document.querySelector('.reviews-list');
+                const newReview = `
+                    <div class="review-item">
+                        <h4>${data.user_email}</h4>
+                        <small>${data.created_at}</small>
+                        <p>${data.text}</p>
+                    </div>
+                `;
+                reviewsList.innerHTML += newReview;
+                reviewInput.value = ''; // Wis het invoerveld
+            } else {
+                alert('Failed to submit review: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Something went wrong. Please try again.');
+        });
+    });
+</script>
+
 
 </body>
 </html>
