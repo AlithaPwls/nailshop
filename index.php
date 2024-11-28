@@ -1,7 +1,6 @@
 <?php
+
 session_start();  // Zorg ervoor dat de sessie eerst wordt gestart
-
-
 
 // Laad de benodigde klassen
 include_once (__DIR__ . "/classes/User.php");
