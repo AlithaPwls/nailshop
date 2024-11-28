@@ -1,25 +1,27 @@
-<?php 
-
+<?php
 class Db {
     private static $conn = null;
 
-    public static function getConnection(){
-        //aanroepen met Db::getConnection();
-        if( self::$conn == null){
-            $db_url = getenv('DATABASE_URL'); // Vraag het geheim briefje van Railway
-            $db_parts = parse_url($db_url);   // Splits het in stukjes
-            
-            $host = $db_parts['host'];
-            $port = $db_parts['port'];
-            $user = $db_parts['user'];
-            $pass = $db_parts['pass'];
-            $dbname = ltrim($db_parts['path'], '/');
-            
-            self::$conn = new PDO("mysql:host=$host;port=$port;dbname=$dbname", $user, $pass);
-                        return self::$conn;
+    public static function getConnection() {
+        if (self::$conn === null) {
+            $pathToSSL = __DIR__ . '/BaltimoreCyberTrustRoot.crt.pem';
+            $options = array(
+                PDO::MYSQL_ATTR_SSL_CA => $pathToSSL,
+            );
+
+            $host = 'pinkgellac.mysql.database.azure.com';
+            $dbname = 'nailshop';
+            $user = 'pinkgellac';
+            $pass = 'Minions2001!';
+
+            try {
+                self::$conn = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass, $options);
+                self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $e) {
+                die("Database connection failed: " . $e->getMessage());
+            }
         }
-        else {
-            return self::$conn;
-        }
+        return self::$conn;
     }
 }
+?>
