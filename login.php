@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once (__DIR__ . "/classes/User.php");
+include_once (__DIR__ . "/classes/Db.php"); // Include the database connection
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
@@ -18,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['lastname'] = $user['lastname'];
         $_SESSION['is_admin'] = $user['is_admin']; // Voeg de adminstatus toe aan de sessie
 
-    
         // Doorverwijzen naar de indexpagina
         header('Location: index.php');
         exit();
@@ -42,10 +42,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if (isset($error)): ?>
             <p class="error"><?= htmlspecialchars($error) ?></p>
         <?php endif; ?>
-        <form method="POST" action="login.php">
-            <label for="text">Email</label>
-            <input type="text" id="email" name="email" required>
-            <label for="password">Password</label>
+        <form method="post" action="login.php">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
             <button type="submit">Login</button>
         </form>
