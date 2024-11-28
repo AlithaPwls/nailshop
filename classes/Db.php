@@ -1,20 +1,30 @@
-<?php 
+
+    <?php 
 
     class Db {
         private static $conn = null;
-
+    
         public static function getConnection(){
-            //aanroepen met Db::getConnection();
-            if( self::$conn == null){
-                self::$conn = new PDO ('mysql:host=mysql.railway.internal;dbname=railway', 'root', 'kZDyniCCbQCadmgVoHtceFKpPOKBJgYJ');
-                return self::$conn;
+            if (self::$conn === null) {
+                try {
+                    $host = getenv('mysql.railway.internal');
+                    $dbname = getenv('railway');
+                    $username = getenv('root');
+                    $password = getenv('kZDyniCCbQCadmgVoHtceFKpPOKBJgYJ');
+    
+                    $dsn = "mysql:host=$host;dbname=$dbname";
+                    self::$conn = new PDO($dsn, $username, $password, [
+                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    ]);
+                } catch (PDOException $e) {
+                    // Handle the error appropriately
+                    die('Database connection failed: ' . $e->getMessage());
+                }
             }
-            else {
-                return self::$conn;
-            }
+            return self::$conn;
         }
     }
-
 
 
 
