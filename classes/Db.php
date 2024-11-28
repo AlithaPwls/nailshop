@@ -1,27 +1,21 @@
-<?php
-class Db {
-    private static $conn = null;
+<?php 
 
-    public static function getConnection() {
-        if (self::$conn === null) {
-            $pathToSSL = __DIR__ . '/BaltimoreCyberTrustRoot.crt.pem';
-            $options = array(
-                PDO::MYSQL_ATTR_SSL_CA => $pathToSSL,
-            );
+    class Db {
+        private static $conn = null;
 
-            $host = 'pinkgellac.mysql.database.azure.com';
-            $dbname = 'nailshop';
-            $user = 'pinkgellac';
-            $pass = 'Minions2001!';
-
-            try {
-                self::$conn = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass, $options);
-                self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            } catch (PDOException $e) {
-                die("Database connection failed: " . $e->getMessage());
+        public static function getConnection(){
+            //aanroepen met Db::getConnection();
+            if( self::$conn == null){
+                self::$conn = new PDO ('mysql:host=localhost;dbname=shop', 'root', '');
+                return self::$conn;
+            }
+            else {
+                return self::$conn;
             }
         }
-        return self::$conn;
     }
-}
-?>
+
+
+
+
+ 

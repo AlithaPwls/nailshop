@@ -1,9 +1,11 @@
 <?php
 session_start();  // Zorg ervoor dat de sessie eerst wordt gestart
 
+
+
 // Laad de benodigde klassen
-include_once(__DIR__ . "/classes/User.php");
-include_once(__DIR__ . "/classes/Db.php");
+include_once (__DIR__ . "/classes/User.php");
+include_once (__DIR__ . "/classes/Db.php");
 
 // Controleer of de gebruiker is ingelogd en of de user_id beschikbaar is in de sessie
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
@@ -14,6 +16,8 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
 
         // Haal de gebruikersinformatie op op basis van de user_id
         $user = User::getById($user_id);  // Dit moet werken, omdat we de user_id nu in de sessie hebben
+
+    
     } else {
         echo "No user logged in.";
     }
@@ -36,7 +40,8 @@ if ($result->rowCount() > 0) {
 
 // Controleer of een kleurcategorie of glitter is geselecteerd
 $colorgroup = $_GET['color_group'] ?? 'all';
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
