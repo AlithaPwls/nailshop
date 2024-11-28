@@ -1,5 +1,20 @@
 <?php
 
+$pathToSSL = __DIR__ . '/BaltimoreCyberTrustRoot.crt.pem';
+$options = array(
+    PDO::MYSQL_ATTR_SSL_CA => $pathToSSL,
+);
+
+$host = 'pinkgellac.mysql.database.azure.com';
+$db = 'nailshop';   
+$user = 'pinkgellac';
+$pass = 'Minionsé001!';
+$db= new PDO("mysql:host=$host;dbname=$db", $user, $pass, $options);
+
+$users= $db->query('SELECT * FROM users');
+var_dump($users->fetchAll());
+
+
 session_start();  // Zorg ervoor dat de sessie eerst wordt gestart
 
 // Laad de benodigde klassen
