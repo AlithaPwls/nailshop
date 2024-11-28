@@ -1,19 +1,5 @@
 <?php
 
-$pathToSSL = __DIR__ . "/private/ssl/ssl.txt";
-$options = array(
-    PDO::MYSQL_ATTR_SSL_CA => $pathToSSL
-);
-
-$host = 'nailhopdb.mysql.database.azure.com';
-$db = 'nailshop';
-$user = 'pinkgellac';
-$pass = 'Minions2001!';
-$db = new PDO("mysql:host=$host;dbname=$db", $user, $pass, $options);
-
-var_dump($users->fetchAll());
-
-
 session_start();  // Zorg ervoor dat de sessie eerst wordt gestart
 
 // Laad de benodigde klassen
