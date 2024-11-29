@@ -102,6 +102,8 @@ if ($product_id) {
 
 <?php
 // Update product
+
+// Update product
 if (isset($_POST['update_product'])) {
     $id = intval($_POST['id']);
     $color_name = $_POST['color_name'];

@@ -85,6 +85,40 @@ $reviews = Review::getReviewsByProductId($product_id);
             <?php endforeach; ?>
         </div>
     </div>
+    <script>
+document.querySelector('.add').addEventListener('click', function (event) {
+    event.preventDefault(); // Voorkomt de standaardactie
+
+    const productId = this.dataset.productId; // Haal het product-ID op
+    this.textContent = '🛒✅'; // Update knoptekst
+    this.disabled = true; // Deactiveer de knop
+
+    // Verstuur een AJAX-aanroep naar add_to_cart.php
+    fetch('add_to_cart.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ product_id: productId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Product successfully added to cart!');
+        } else {
+            console.error('Failed to add product to cart: ' + data.error);
+            this.textContent = 'Add to cart'; // Reset knop
+            this.disabled = false; // Activeer de knop opnieuw
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while adding the product to your cart.');
+        this.textContent = 'Add to cart'; // Reset knop
+        this.disabled = false; // Activeer de knop opnieuw
+    });
+});
+</script>
 
 <script>
 document.getElementById('review-form')?.addEventListener('submit', function(e) {
@@ -123,6 +157,7 @@ document.getElementById('review-form')?.addEventListener('submit', function(e) {
     });
 });
 </script>
+
 
 </body>
 </html>
