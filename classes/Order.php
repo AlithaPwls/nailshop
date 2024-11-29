@@ -25,5 +25,22 @@ class Order {
         $stmt->bindValue(":user_id", $userId);
         return $stmt->execute();
     }
+    public static function userHasPurchasedProduct($userId, $productId) {
+        $conn = Db::getConnection();
+        $stmt = $conn->prepare("
+            SELECT COUNT(*) 
+            FROM orders 
+            WHERE user_id = :user_id 
+            AND JSON_SEARCH(products, 'one', :product_id, NULL, '$[*].product_id') IS NOT NULL
+        ");
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':product_id', (string)$productId, PDO::PARAM_STR); // Cast productId naar string
+        $stmt->execute();
+        return $stmt->fetchColumn() > 0;
+    }
+    
+    
+    
+    
 }
 ?>

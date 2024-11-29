@@ -3,7 +3,7 @@ session_start();
 
 include_once (__DIR__ . "/classes/products.php");
 include_once (__DIR__ . "/classes/Review.php");
-
+include_once (__DIR__ . "/classes/Order.php");
 
 // Controleer of de gebruiker is ingelogd
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
@@ -25,6 +25,10 @@ if (!$product) {
     echo "Product not found.";
     exit();
 }
+
+// Controleer of de gebruiker dit product heeft gekocht
+$user_id = $_SESSION['user_id'];
+$hasPurchased = Order::userHasPurchasedProduct($user_id, $product_id);
 
 // Haal reviews op via de Review-class
 $reviews = Review::getReviewsByProductId($product_id);
@@ -53,17 +57,22 @@ $reviews = Review::getReviewsByProductId($product_id);
                 <button class="add" data-product-id="<?= $product['id']; ?>">Add to cart</button>
                 <?php if ($_SESSION['is_admin'] == 1): ?>
                         <a href="edit_product.php?id=<?php echo $product['id']; ?>" class="edit-product-btn">Edit Product</a>
-                    <?php endif; ?>
+                <?php endif; ?>
             </div>
         </div>
     </div>
 
     <div class="reviews-section">
         <h2>Reviews</h2>
-        <form id="review-form">
-            <textarea id="review-text" placeholder="Write a review..." required></textarea>
-            <button type="submit">Submit</button>
-        </form>
+
+        <?php if ($hasPurchased): ?>
+            <form id="review-form">
+                <textarea id="review-text" placeholder="Write a review..." required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+        <?php else: ?>
+            <p>You can only write a review if you have purchased this product.</p>
+        <?php endif; ?>
 
         <!-- Bestaande reviews weergeven -->
         <div class="reviews-container">
@@ -77,17 +86,13 @@ $reviews = Review::getReviewsByProductId($product_id);
         </div>
     </div>
 
-
-</div>
-
 <script>
-document.getElementById('review-form').addEventListener('submit', function(e) {
-    e.preventDefault(); // Voorkomt de standaard form-submissie
+document.getElementById('review-form')?.addEventListener('submit', function(e) {
+    e.preventDefault();
 
     const reviewText = document.getElementById('review-text').value;
     const productId = <?= json_encode($product['id']); ?>;
 
-    // Stuur de gegevens via AJAX naar de server
     fetch('submit_review.php', {
         method: 'POST',
         headers: {
@@ -98,7 +103,6 @@ document.getElementById('review-form').addEventListener('submit', function(e) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Nieuwe review toevoegen aan de reviews-container
             const reviewsContainer = document.querySelector('.reviews-container');
             const newReview = document.createElement('div');
             newReview.classList.add('review-item');
@@ -108,8 +112,6 @@ document.getElementById('review-form').addEventListener('submit', function(e) {
                 <p>${data.text}</p>
             `;
             reviewsContainer.appendChild(newReview);
-
-            // Maak het formulier leeg
             document.getElementById('review-text').value = '';
         } else {
             alert('Failed to submit review: ' + data.error);
@@ -120,7 +122,6 @@ document.getElementById('review-form').addEventListener('submit', function(e) {
         alert('An error occurred while submitting your review.');
     });
 });
-
 </script>
 
 </body>
