@@ -8,6 +8,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 300px;
 }
 
 /* Container voor productdetails */
@@ -125,5 +126,60 @@ a.edit-product-btn:hover {
 
 #review-form button[type="submit"]:hover {
     background-color: #da5899;
+}
+
+/* Reviews sectie */
+.reviews-section {
+    width: 70%; /* Zelfde breedte als product-details */
+    margin-top: 3rem;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reviews-section h2 {
+    color: #ff8bb4;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Layout voor reviews */
+.reviews-container {
+    display: flex;
+    flex-wrap: wrap; /* Zorgt dat items op meerdere rijen komen als er meer dan 4 zijn */
+    gap: 1rem; /* Ruimte tussen de reviews */
+    justify-content: flex-start;
+}
+
+.review-item {
+    margin-top: 20px;
+    background-color: #fcf2f7;
+    border: 1px solid #f280a8;
+    border-radius: 10px;
+    padding: 1rem;
+    width: calc(25% - 1rem); /* Zorgt voor 4 items per rij */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.review-item h4 {
+    color: #ff8bb4;
+    font-size: 1.1rem;
+    margin: 0;
+    margin-bottom: 0.5rem;
+}
+
+.review-item small {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.review-item p {
+    font-size: 1rem;
+    color: #333;
 }
 

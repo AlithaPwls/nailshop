@@ -44,8 +44,9 @@ class Review {
         ");
         $stmt->bindValue(':product_id', $product_id, PDO::PARAM_INT);
         $stmt->execute();
-
+    
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
 }
 ?>
