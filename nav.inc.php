@@ -35,7 +35,7 @@
 
         <?php if (isset($_SESSION['email'])): ?>
             <a href="profile.php" class="navbar__profile">View Profile</a>
-            <a href="logout.php" class="navbar__logout">Hi <?php echo htmlspecialchars($_SESSION['email']); ?>, logout?</a>
+            <a href="logout.php" class="navbar__logout">Hi <?php echo htmlspecialchars($_SESSION['firstname']); ?>, logout?</a>
         <?php else: ?>
             <a href="login.php" class="navbar__login">Login</a>
         <?php endif; ?>
