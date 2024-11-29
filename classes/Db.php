@@ -6,7 +6,7 @@ class Db {
     public static function getConnection(){
         // Aanroepen met Db::getConnection();
         if (self::$conn == null) {
-            $pathToSSL = __DIR__ . '/CA.pem';
+            $pathToSSL = __DIR__ . '/DigiCertGlobalRootG2.crt.pem';
             $options = array(
                 PDO::MYSQL_ATTR_SSL_CA => $pathToSSL,
             );
