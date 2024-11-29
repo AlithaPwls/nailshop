@@ -100,10 +100,13 @@ button:hover {
     color: #f280a8;
 }
 
-.checkout {
+.checkout-btn {
     display: flex;
-    justify-content: center; /* Zorgt ervoor dat de knop horizontaal gecentreerd wordt */
-    margin-top: 20px; /* Optioneel, voegt wat ruimte boven de knop toe */
+    padding: 1em 2em;
+    font-size: 20px;
+    margin: 0 auto;
+    margin-top: 30px; /* Optioneel, voegt wat ruimte boven de knop toe */
+
 }
 
 

@@ -13,6 +13,10 @@ a {
     text-decoration: none;
 }
 
+h4 {
+    padding-top: 30px;
+}
+
 .order-container {
     width: 80%;
     margin-top: 2rem;
@@ -84,25 +88,4 @@ td img {
 .order-total p {
     font-size: 1.2rem;
     color: #f280a8;
-}
-
-@media screen and (max-width: 1300px) {
-    .order-container {
-        width: 90%;
-    }
-}
-
-@media screen and (max-width: 900px) {
-    table td {
-        font-size: 0.9rem;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    table {
-        font-size: 0.8rem;
-    }
-    .order-container h1 {
-        font-size: 1.5rem;
-    }
 }

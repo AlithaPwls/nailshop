@@ -21,16 +21,17 @@ class Review {
         $stmt->bindValue(':text', $this->text, PDO::PARAM_STR);
         $stmt->bindValue(':product_id', $this->product_id, PDO::PARAM_INT);
         $stmt->bindValue(':user_id', $this->user_id, PDO::PARAM_INT);
-
+    
         if (!$stmt->execute()) {
             throw new Exception("Failed to save the review.");
         }
-
+    
         return [
             'text' => htmlspecialchars($this->text),
-            'created_at' => date("Y-m-d H:i:s"),
+            'created_at' => date("Y-m-d"),
         ];
     }
+    
 
     public static function getReviewsByProductId($product_id) {
         $conn = Db::getConnection();

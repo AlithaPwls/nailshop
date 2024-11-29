@@ -20,7 +20,7 @@ body {
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
+    padding: 2rem;
     margin-top: 3rem;
 }
 
@@ -36,9 +36,10 @@ body {
 .product-info {
     flex-grow: 1;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: flex-start;
     text-align: left;
+    gap: 20px;
 }
 
 /* Stijl voor de tekst en prijs */
@@ -52,112 +53,77 @@ body {
     font-size: 1rem;
     color: #da5899;
     margin-bottom: 1.5rem;
+    padding-right: 50px;
+    padding-top: 20px;
 }
 
-/* Knoppen naast elkaar */
-.product-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 1rem;
-}
-
-button.add-to-cart,
-.admin-btn {
-    background-color: #ffffff;
-    color: #ff8bb4;
-    border: 1px solid #ff8bb4;
-    padding: 0.5rem 1.5rem;
+.add,
+a.edit-product-btn {
+    background-color: #fff;
+    color: #f280a8;
+    border: 2px solid #f280a8;
+    padding: 1em 2em;
     border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
+    font-size: 15px;
     text-decoration: none;
-    display: inline-block;
-    text-align: center;
+    margin-top: 30px;
 }
 
-button.add-to-cart:hover,
-.admin-btn:hover {
-    background-color: #ff8bb4;
+a.edit-product-btn {
+    margin-left: 40px;
+}
+
+.add:hover,
+a.edit-product-btn:hover {
+    background-color: #f280a8;
     color: white;
 }
 
+/* Reviews sectie */
 .reviews-section {
-    margin-top: 20px;
+    width: 70%; /* Zelfde breedte als product-details */
+    margin-top: 3rem;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reviews-section h2 {
+    color: #ff8bb4;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 #review-form {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
+    flex-direction: row;
+    margin-top: 1rem;
 }
 
 #review-text {
     width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
+    height: 20px;
     border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 1rem;
+    resize: none;
 }
 
-#review-form button {
-    align-self: flex-start;
-    background-color: #ff8bb4;
+#review-form button[type="submit"] {
+    background-color: #f280a8;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 0em 1em;
     border-radius: 5px;
+    font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-left: 10px;
 }
 
-#review-form button:hover {
-    background-color: #e6005c;
+#review-form button[type="submit"]:hover {
+    background-color: #da5899;
 }
 
-.review-item {
-    margin-bottom: 20px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
-}
-
-.review-item h4 {
-    font-size: 16px;
-    margin: 0;
-    color: #f280a8;
-}
-
-.review-item small {
-    color: #888;
-    font-size: 12px;
-}
-
-.review-item p {
-    font-size: 14px;
-    margin: 5px 0;
-    color: #333;
-}
-
-
-/* Responsief ontwerp */
-@media screen and (max-width: 900px) {
-    .product-details {
-        flex-direction: column;
-        width: 90%;
-    }
-
-    .product-image img {
-        width: 100%;
-        max-width: 300px;
-        margin: 0 auto 20px;
-    }
-
-    .product-info {
-        text-align: center;
-    }
-
-    .product-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-}

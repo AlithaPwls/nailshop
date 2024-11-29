@@ -54,6 +54,7 @@ if ($user && $user['currency'] >= $total) {
     $error = "Insufficient funds. Please add more funds to your account.";
 }
 
+
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +71,9 @@ if ($user && $user['currency'] >= $total) {
     <div class="order-container">
         <?php if (isset($orderProcessed) && $orderProcessed): ?>
             <h1>Thank you for your order! 🩷</h1>
-            <h3>Here are the details of your purchase:</h3>
+            <h3>You'll get notified when your package is on its way!</h3>
+
+            <h4>Here are the details of your purchase:</h4>
 
             <table>
                 <thead>
@@ -102,7 +105,6 @@ if ($user && $user['currency'] >= $total) {
                 <p><strong>Total:</strong> €<?= number_format($total + 4.95, 2) ?></p>
             </div>
 
-            <h3>You'll get notified when your package is on its way!</h3>
         <?php else: ?>
             <h1>Error</h1>
             <p><?= htmlspecialchars($error) ?></p>
