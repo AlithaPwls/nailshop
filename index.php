@@ -8,8 +8,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || !isset($_
 }
 
 // Laad de benodigde klassen
-include (__DIR__ . "/classes/User.php");
-include (__DIR__ . "/classes/Products.php");
+include (__DIR__ . "./classes/User.php");
+include (__DIR__ . "./classes/Products.php");
 
 // Haal de user_id uit de sessie
 $user_id = $_SESSION['user_id'];
