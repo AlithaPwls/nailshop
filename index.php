@@ -36,6 +36,10 @@ $result = $conn->query($sql);
 
 if ($result->rowCount() > 0) {
     $products = $result->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($products as $product) {
+        echo $product['image_url'] . "<br>";
+    }
+    
 } else {
     $products = [];
 }
