@@ -19,9 +19,14 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     
     } else {
         echo "No user logged in.";
+        header('Location: index.php');
+        exit();
     }
 } else {
     echo "You are not logged in.";
+    header('Location: index.php');
+    exit();
+   
 }
 
 // Verbind met de database voor productgegevens
