@@ -14,25 +14,36 @@
             <a href="add_product.php" class="nav-link">Add product</a>
         <?php endif; ?>        
         <a href="view_cart.php" class="cart-btn">View Cart</a>
-        <a href="#" class="navbar__currency">Currency - € 
-            <?php
-            // Haal de currency op uit de database
-            include_once 'classes/Db.php';
-            /*$conn = new mysqli('localhost', 'root', '', 'shop');
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }*/
-            $user_id = $_SESSION['user_id'];
-            $sql = "SELECT currency FROM users WHERE id = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('i', $user_id);
+ <a href="#" class="navbar__currency">Currency - € 
+    <?php
+    require_once 'classes/Db.php'; // Zorg ervoor dat dit correct wordt geladen
+
+    // Controleer of de gebruiker is ingelogd
+    if (isset($_SESSION['user_id'])) {
+        try {
+            // Verbind met de database
+            $conn = Db::getConnection();
+
+            // Haal de currency op
+            $stmt = $conn->prepare("SELECT currency FROM users WHERE id = :id");
+            $stmt->bindParam(':id', $_SESSION['user_id'], PDO::PARAM_INT);
             $stmt->execute();
-            $stmt->bind_result($currency);
-            $stmt->fetch();
-            $conn->close();
-            echo number_format($currency, 2, ',', '.');
-            ?>
-        </a>
+
+            $result = $stmt->fetch();
+            if ($result) {
+                echo number_format($result['currency'], 2, ',', '.');
+            } else {
+                echo "Not found.";
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    } else {
+        echo "User not logged in.";
+    }
+    ?>
+</a>
+
 
         <?php if (isset($_SESSION['email'])): ?>
             <a href="profile.php" class="navbar__profile">View Profile</a>
