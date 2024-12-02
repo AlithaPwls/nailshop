@@ -17,10 +17,11 @@
         <a href="#" class="navbar__currency">Currency - € 
             <?php
             // Haal de currency op uit de database
+            include 'classes/Db.php';
             $conn = new mysqli('localhost', 'root', '', 'shop');
-            if ($conn->connect_error) {
+            /*if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
-            }
+            }*/
             $user_id = $_SESSION['user_id'];
             $sql = "SELECT currency FROM users WHERE id = ?";
             $stmt = $conn->prepare($sql);
