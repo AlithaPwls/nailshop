@@ -1,8 +1,5 @@
 <?php
-// Controleer of de sessie al actief is
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+
 require_once 'classes/Db.php';
 ?>
 
