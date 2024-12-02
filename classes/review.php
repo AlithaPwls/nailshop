@@ -12,6 +12,23 @@ class Review {
         $this->user_id = $user_id;
     }
 
+    
+
+    public static function getReviewsByProductId($product_id) {
+        $conn = Db::getConnection();
+        $stmt = $conn->prepare("
+            SELECT r.text, r.created_at, u.email 
+            FROM review r 
+            INNER JOIN users u ON r.users_id = u.id 
+            WHERE r.products_id = :product_id 
+            ORDER BY r.created_at DESC
+        ");
+        $stmt->bindValue(':product_id', $product_id, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
     public function save() {
         $conn = Db::getConnection();
         $stmt = $conn->prepare("
@@ -31,22 +48,5 @@ class Review {
             'created_at' => date("Y-m-d"),
         ];
     }
-    
-
-    public static function getReviewsByProductId($product_id) {
-        $conn = Db::getConnection();
-        $stmt = $conn->prepare("
-            SELECT r.text, r.created_at, u.email 
-            FROM review r 
-            INNER JOIN users u ON r.users_id = u.id 
-            WHERE r.products_id = :product_id 
-            ORDER BY r.created_at DESC
-        ");
-        $stmt->bindValue(':product_id', $product_id, PDO::PARAM_INT);
-        $stmt->execute();
-    
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    
 }
 ?>
