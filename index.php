@@ -10,6 +10,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || !isset($_
 // Laad de benodigde klassen
 include_once (__DIR__ . "/classes/User.php");
 include_once (__DIR__ . "/classes/Products.php");
+echo "Products.php is succesvol geladen!";
+exit;
 include_once (__DIR__ . "/classes/Db.php");
 
 // Haal de user_id uit de sessie
