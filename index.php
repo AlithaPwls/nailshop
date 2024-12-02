@@ -77,7 +77,7 @@ $colorgroup = $_GET['color_group'] ?? 'all';
                 ): ?>
                     <a href="product_details.php?id=<?= $product['id']; ?>">
                         <article>
-                            <img src="/nailshop/images<?= $product['image_url']; ?>" alt="Product image">
+                            <img src="<?= $product['image_url']; ?>" alt="Product image">
                             <h2><?= $product['color_name'] . " - " . $product['color_number']; ?></h2>
                             <h3>€<?= number_format($product['price'], 2); ?></h3>
                             <button class="add" data-product-id="<?= $product['id']; ?>">Add to cart</button>
@@ -116,7 +116,6 @@ $colorgroup = $_GET['color_group'] ?? 'all';
     }
 </script>
 <script>
-?>
 document.querySelectorAll('.add').forEach(button => {
     button.addEventListener('click', function (event) {
         event.preventDefault();
