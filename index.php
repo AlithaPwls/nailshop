@@ -1,5 +1,7 @@
 <?php
-session_start();  // Zorg ervoor dat de sessie eerst wordt gestart
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 
 
