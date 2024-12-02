@@ -1,7 +1,5 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+
 require_once 'classes/Db.php';
 include_once 'classes/User.php';
 ?>
