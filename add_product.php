@@ -6,7 +6,7 @@ if ($_SESSION['loggedin'] !== true) {
     exit();
 }
 
-include_once (__DIR__ . "/classes/Products.php");
+include_once (__DIR__ . "../classes/Products.php");
 include_once (__DIR__ . "/classes/User.php"); // Zorg ervoor dat de juiste klasse wordt geladen
 
 $email = $_SESSION['email'];
