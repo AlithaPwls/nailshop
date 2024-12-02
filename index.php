@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // Laad de benodigde klassen
 include_once (__DIR__ . "/classes/User.php");
 include_once (__DIR__ . "/classes/Product.php");
-include_once (__DIR__ . "/classes/Db.php");
+include_once (__DIR__ . "/classes/Cart.php");
 
 // Controleer of de gebruiker is ingelogd en of de user_id beschikbaar is in de sessie
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
