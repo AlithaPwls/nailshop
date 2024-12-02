@@ -8,7 +8,12 @@ class Db {
             try {
                 // Verbind met de database
                 self::$conn = new PDO(
-                    "mysql:host=mysql.railway.internal;dbname=railway",
+                   /* "mysql:host=localhost;dbname=shop", "root", "",
+                    [
+                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // Fouten goed weergeven
+                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC // Resultaat als associatieve array
+                    ]*/
+                   "mysql:host=mysql.railway.internal;dbname=railway",
                     "root",
                     "PZDSkWNomDWQwAYoeHMmSPGVCFByPahw",
                     [
