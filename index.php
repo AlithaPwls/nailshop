@@ -36,7 +36,6 @@ $result = $conn->query($sql);
 
 if ($result->rowCount() > 0) {
     $products = $result->fetchAll(PDO::FETCH_ASSOC);
-   
 } else {
     $products = [];
 }
