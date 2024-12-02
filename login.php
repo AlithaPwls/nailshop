@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once (__DIR__ . "/classes/User.php");
+//include_once (__DIR__ . "/classes/User.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
