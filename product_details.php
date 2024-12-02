@@ -2,6 +2,11 @@
 session_start();
 
 include_once (__DIR__ . "/../classes/Products.php");
+if (!file_exists(__DIR__ . "/../classes/Products.php")) {
+    echo "Products.php not found.";
+} else {
+    echo "Products.php found.";
+}
 include_once (__DIR__ . "/../classes/Review.php");
 include_once (__DIR__ . "/classes/Order.php");
 
