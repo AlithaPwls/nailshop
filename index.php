@@ -19,12 +19,12 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     
     } else {
         echo "No user logged in.";
-        header('Location: index.php');
+        header('Location: login.php');
         exit();
     }
 } else {
     echo "You are not logged in.";
-    header('Location: index.php');
+    header('Location: login.php');
     exit();
    
 }
