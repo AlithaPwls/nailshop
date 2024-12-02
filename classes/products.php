@@ -1,5 +1,5 @@
 <?php
-include_once("Db.php");
+include_once("/Db.php");
 
 class Product {
     private $id;
