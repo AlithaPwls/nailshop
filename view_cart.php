@@ -8,8 +8,7 @@ if ($_SESSION['loggedin'] !== true) {
 }
 include_once (__DIR__ . "/classes/User.php");
 include_once (__DIR__ . "/classes/Cart.php");
-include_once 'classes/User.php';
-include_once 'classes/Cart.php';
+
 
 // Haal de gebruiker op via de User-class
 $user = User::getByEmail($_SESSION['email']);

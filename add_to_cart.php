@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include_once (__DIR__ . "/classes/cart.php");
+include_once (__DIR__ . "/classes/Cart.php");
 
 // Controleer of de gebruiker is ingelogd
 if (!isset($_SESSION['user_id'])) {

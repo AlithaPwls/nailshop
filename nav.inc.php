@@ -2,6 +2,7 @@
 session_start();
 
 require_once 'classes/Db.php';
+include_once 'classes/User.php';
 ?>
 
 <link rel="stylesheet" href="css/nav.css">
