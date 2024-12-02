@@ -1,9 +1,6 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
+
     session_start();
-}
-
-
 
 // Laad de benodigde klassen
 include_once (__DIR__ . "/classes/User.php");
