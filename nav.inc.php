@@ -18,8 +18,8 @@
             <?php
             // Haal de currency op uit de database
             include 'classes/Db.php';
-            $conn = new mysqli('localhost', 'root', '', 'shop');
-            /*if ($conn->connect_error) {
+            /*$conn = new mysqli('localhost', 'root', '', 'shop');
+            if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }*/
             $user_id = $_SESSION['user_id'];
