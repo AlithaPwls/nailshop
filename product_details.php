@@ -1,8 +1,8 @@
 <?php
 session_start();
+echo "Current directory: " . __DIR__;
 
 include_once (__DIR__ . "/classes/Products.php");
-
 include_once (__DIR__ . "/classes/Review.php");
 include_once (__DIR__ . "/classes/Order.php");
 
