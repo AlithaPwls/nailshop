@@ -1,8 +1,8 @@
 <?php
 session_start();
-include_once(__DIR__ . "./classes/Products.php");
-include_once(__DIR__ . "./classes/Review.php");
-include_once(__DIR__ . "./classes/Order.php");
+include_once(__DIR__ . "/classes/Products.php");
+include_once(__DIR__ . "/classes/Review.php");
+include_once(__DIR__ . "/classes/Order.php");
 
 // Controleer of de gebruiker is ingelogd
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
