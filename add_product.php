@@ -41,9 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fileName = uniqid('product_', true) . '.' . $fileExtension;
             $filePath = $uploadDir . $fileName;
 
-            echo "Realpath: " . realpath($uploadDir);
-            exit;
-            
 
             if (!file_exists($uploadDir)) {
                 throw new Exception("Upload directory does not exist: " . $uploadDir);
