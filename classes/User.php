@@ -8,7 +8,7 @@ class User {
     private $email;
     private $password;
 
-    // Getter en setter voor firstname
+    // Getter en setter voor alle velden
     public function getFirstname() {
         return $this->firstname;
     }
@@ -21,7 +21,6 @@ class User {
         return $this;
     }
 
-    // Getter en setter voor lastname
     public function getLastname() {
         return $this->lastname;
     }
@@ -34,7 +33,6 @@ class User {
         return $this;
     }
 
-    // Getter en setter voor email
     public function getEmail() {
         return $this->email;
     }
@@ -47,17 +45,15 @@ class User {
         return $this;
     }
 
-    // Setter voor password
     public function setPassword($password) {
         if (empty($password)) {
             throw new Exception("Password cannot be empty");
         }
-        // Hash het wachtwoord
+        // Hash wachtwoord
         $this->password = password_hash($password, PASSWORD_DEFAULT);
         return $this;
     }
 
-    // Opslaan in de database
     public function save() {
         $conn = Db::getConnection();
         $statement = $conn->prepare('INSERT INTO users (firstname, lastname, email, password) VALUES (:firstname, :lastname, :email, :password)');
@@ -68,14 +64,12 @@ class User {
         $statement->execute();
     }
 
-    // Ophalen van alle gebruikers
     public static function getAll() {
         $conn = Db::getConnection();
         $statement = $conn->query('SELECT * FROM users');
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Ophalen van een gebruiker op basis van ID
     public static function getById($id) {
         $conn = Db::getConnection();
         $stmt = $conn->prepare('SELECT * FROM users WHERE id = :id');
@@ -85,7 +79,7 @@ class User {
     }
     
 
-    // Bijwerken van de currency van een gebruiker
+    // update currency van de user
     public static function updateCurrency($userId, $newCurrency) {
         $conn = Db::getConnection();
         $statement = $conn->prepare('UPDATE users SET currency = :currency WHERE id = :id');
@@ -94,7 +88,7 @@ class User {
         return $statement->execute();
     }
 
-    // Controleren of een e-mailadres al bestaat
+    // Controleer of een e-mailadres al bestaat
     public static function emailExists($email) {
         $conn = Db::getConnection();
         $statement = $conn->prepare('SELECT COUNT(*) FROM users WHERE email = :email');
@@ -109,7 +103,7 @@ class User {
     $stmt = $conn->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
     $stmt->bindValue(':email', $email, PDO::PARAM_STR);
     $stmt->execute();
-    return $stmt->fetchColumn() > 0; // Retourneert true als het e-mailadres al bestaat
+    return $stmt->fetchColumn() > 0; // true als email al bestaat
 }
 
 public static function registerNewUser($firstname, $lastname, $email, $password)
@@ -120,7 +114,7 @@ public static function registerNewUser($firstname, $lastname, $email, $password)
     $stmt->bindValue(':lastname', $lastname, PDO::PARAM_STR);
     $stmt->bindValue(':email', $email, PDO::PARAM_STR);
     $stmt->bindValue(':password', password_hash($password, PASSWORD_DEFAULT), PDO::PARAM_STR);
-    return $stmt->execute(); // Voert de query uit en retourneert true als het succesvol is
+    return $stmt->execute(); 
 }
 
 
@@ -133,9 +127,9 @@ public static function registerNewUser($firstname, $lastname, $email, $password)
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
         if ($user && password_verify($password, $user['password'])) {
-            return $user; // Retourneert gebruikersgegevens bij succesvolle login
+            return $user; 
         }
-        return false; // Retourneert false als de authenticatie mislukt
+        return false; 
     }
 
     public static function getUserByEmail($email)
@@ -153,7 +147,7 @@ public static function registerNewUser($firstname, $lastname, $email, $password)
     $stmt = $conn->prepare("SELECT firstname, lastname, email, currency FROM users WHERE email = :email");
     $stmt->bindValue(':email', $email, PDO::PARAM_STR);
     $stmt->execute();
-    return $stmt->fetch(PDO::FETCH_ASSOC); // Retourneer de gegevens van de gebruiker
+    return $stmt->fetch(PDO::FETCH_ASSOC); 
 }
 
 
@@ -164,7 +158,7 @@ public static function registerNewUser($firstname, $lastname, $email, $password)
     $stmt->bindValue(':email', $email, PDO::PARAM_STR);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $user ? $user['password'] : null; // Retourneer het wachtwoord of null als de gebruiker niet wordt gevonden
+    return $user ? $user['password'] : null; 
 }
 
 public static function updatePassword($email, $newPassword)

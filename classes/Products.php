@@ -122,17 +122,17 @@ class Products {
         return $this;
     }
 
-    // Haal een product op basis van ID
+    // Haal product op basis van de id
     public static function getById($id)
     {
         $conn = Db::getConnection();
         $stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
-        $stmt->bindValue(1, $id, PDO::PARAM_INT);  // Gebruik bindValue() in plaats van bind_param()
+        $stmt->bindValue(1, $id, PDO::PARAM_INT); 
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Update een bestaand product in de database
+    // Update een bestaand product in de database met veranderingen
     public function update()
     {
         $conn = Db::getConnection();
@@ -144,18 +144,18 @@ class Products {
         $stmt->bindValue(5, $this->image_url, PDO::PARAM_STR);
         $stmt->bindValue(6, $this->color_group, PDO::PARAM_STR);
         $stmt->bindValue(7, $this->description, PDO::PARAM_STR);
-        $stmt->bindValue(8, $this->id, PDO::PARAM_INT);  // Bind de ID als laatste parameter
+        $stmt->bindValue(8, $this->id, PDO::PARAM_INT);  
     
         return $stmt->execute();
     }
     
 
-    // Verwijder een product op basis van ID
+    // Verwijder product op basis van ID
     public static function delete($id)
     {
         $conn = Db::getConnection();
         $stmt = $conn->prepare("DELETE FROM products WHERE id = ?");
-        $stmt->bindValue(1, $id, PDO::PARAM_INT);  // Gebruik bindValue() voor PDO
+        $stmt->bindValue(1, $id, PDO::PARAM_INT);  
         return $stmt->execute();
     }
 
@@ -167,7 +167,7 @@ class Products {
     $search_term = '%' . $search_query . '%';
     $stmt->bindValue(':search_term', $search_term, PDO::PARAM_STR);
     $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC); // Retourneer de zoekresultaten
+    return $stmt->fetchAll(PDO::FETCH_ASSOC); 
 }
 
     
@@ -176,7 +176,7 @@ class Products {
     {
         $conn = Db::getConnection();
         $stmt = $conn->query("SELECT * FROM products");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC); // Gebruik fetchAll in plaats van fetch_all
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); 
     }
     
     
@@ -190,8 +190,7 @@ class Products {
             VALUES 
             (:color_name, :color_number, :price, :has_glitter, :image_url, :color_group, :description)
         ');
-    
-        // Vervang bind_param() door bindValue()
+
         $statement->bindValue(':color_name', $this->color_name);
         $statement->bindValue(':color_number', $this->color_number);
         $statement->bindValue(':price', $this->price);

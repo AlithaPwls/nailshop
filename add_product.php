@@ -7,20 +7,19 @@ if ($_SESSION['loggedin'] !== true) {
 }
 
 include_once (__DIR__ . "/classes/Products.php");
-include_once (__DIR__ . "/classes/User.php"); // Zorg ervoor dat de juiste klasse wordt geladen
+include_once (__DIR__ . "/classes/User.php"); 
 
 $email = $_SESSION['email'];
-$user = User::getUserByEmail($email); // Haal de gebruiker op via de juiste methode van de User-klasse
+$user = User::getUserByEmail($email); 
 
 include_once("classes/Db.php");
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        // Valideer de invoer
         $colorName = htmlspecialchars($_POST['color_name'], ENT_QUOTES, 'UTF-8');
         $colorNumber = htmlspecialchars($_POST['color_number'], ENT_QUOTES, 'UTF-8');
-        $price = floatval($_POST['price']); // Zorg dat dit een geldig getal is
+        $price = floatval($_POST['price']); // dit getal moet geldig zijn dus niet negatief
         $hasGlitter = isset($_POST['has_glitter']) ? 1 : 0;
         $colorGroup = htmlspecialchars($_POST['color_group'], ENT_QUOTES, 'UTF-8');
         $colorDescription = htmlspecialchars($_POST['color_description'], ENT_QUOTES, 'UTF-8');
@@ -32,15 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $uploadedFile = $_FILES['image_file'];
             $fileExtension = strtolower(pathinfo($uploadedFile['name'], PATHINFO_EXTENSION));
             
-            // Controleer bestandstype
             $allowedExtensions = ['jpeg', 'jpg', 'png'];
             if (!in_array($fileExtension, $allowedExtensions)) {
                 throw new Exception("Only JPEG and PNG files are allowed.");
             }
 
             // Genereer een unieke naam voor de afbeelding
-            $fileName = uniqid('product_', true) . '.' . $fileExtension;
-            $filePath = $uploadDir . $fileName;
+           // $fileName = uniqid('product_', true) . '.' . $fileExtension;
+            //$filePath = $uploadDir . $fileName;
 
             if (!move_uploaded_file($uploadedFile['tmp_name'], $filePath)) {
                   throw new Exception("Failed to upload image.");

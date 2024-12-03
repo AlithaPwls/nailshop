@@ -38,7 +38,7 @@ class Order {
         $stmt->bindValue(':product_id', '%"product_id":' . $productId . '%', PDO::PARAM_STR); // Zoek als string
         $stmt->execute();
     
-        return $stmt->fetchColumn() > 0; // Retourneer true als er minstens 1 resultaat is
+        return $stmt->fetchColumn() > 0; // Retourneer true als er minstens 1 resultaat is, dan kan user review schrijven
     }
     
     
