@@ -7,7 +7,7 @@ include_once (__DIR__ . "/classes/Products.php");
 $search_query = isset($_GET['search']) ? $_GET['search'] : '';
 
 // Haal de zoekresultaten op via de Product-klasse
-$products = Product::searchProducts($search_query);
+$products = Products::searchProducts($search_query);
 ?>
 
 <!DOCTYPE html>
