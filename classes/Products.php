@@ -1,7 +1,7 @@
 <?php
 include_once("Db.php");
 
-class Product {
+class Products {
     private $id;
     private $color_name;
     private $color_number;
