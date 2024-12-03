@@ -37,8 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             // Genereer een unieke naam voor de afbeelding
-           // $fileName = uniqid('product_', true) . '.' . $fileExtension;
-            //$filePath = $uploadDir . $fileName;
+            $fileName = uniqid('product_', true) . '.' . $fileExtension;
+            $filePath = $uploadDir . $fileName;
 
             if (!move_uploaded_file($uploadedFile['tmp_name'], $filePath)) {
                   throw new Exception("Failed to upload image.");
