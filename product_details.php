@@ -19,7 +19,7 @@ if (!$product_id) {
 }
 
 // Haal productgegevens op
-$product = Product::getById($product_id);
+$product = Products::getById($product_id);
 if (!$product) {
     echo "Product not found.";
     exit();
