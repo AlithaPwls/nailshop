@@ -135,11 +135,22 @@ public static function registerNewUser($firstname, $lastname, $email, $password)
     public static function getUserByEmail($email)
     {
         $conn = Db::getConnection();
-        $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt = $conn->prepare("SELECT id, firstname, lastname, email FROM users WHERE email = ?");
         $stmt->bindValue(1, $email, PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    
+
+
+    /*public static function getUserByEmail($email)
+    {
+        $conn = Db::getConnection();
+        $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->bindValue(1, $email, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }*/
 
     public static function getUserProfileByEmail($email)
 {

@@ -23,6 +23,7 @@ if(!empty($_POST)){
                 // Sla de user_id op in de sessie
                 $_SESSION['loggedin'] = true;
                 $_SESSION['email'] = $email;
+                $_SESSION['firstname'] = $user['firstname'];
                 $_SESSION['user_id'] = $user['id'];  // Sla de user_id op in de sessie
 
                 // Redirect naar index.php
