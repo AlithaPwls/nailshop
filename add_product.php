@@ -43,9 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $filePath = $uploadDir . $fileName;
 
             
-            if (!move_uploaded_file($uploadedFile['tmp_name'], $filePath)) {
+            if (!move_uploaded_file($uploadedFile['image_url'], $filePath)) {
                 throw new Exception("Failed to upload image.");
             }
+
+            /*if (!move_uploaded_file($uploadedFile['tmp_name'], $filePath)) {
+                throw new Exception("Failed to upload image.");
+            }*/
 
             // Zet het relatieve pad voor opslag in de database
             $imageUrl = 'images/' . $fileName;
