@@ -25,21 +25,22 @@ class Order {
         $stmt->bindValue(":user_id", $userId);
         return $stmt->execute();
     }
+
     public static function userHasPurchasedProduct($userId, $productId) {
         $conn = Db::getConnection();
         $stmt = $conn->prepare("
-            SELECT COUNT(*) 
-            FROM orders 
-            WHERE user_id = :user_id 
-            AND JSON_SEARCH(products, 'one', :product_id, NULL, '$[*].product_id') IS NOT NULL
+            SELECT COUNT(*)
+            FROM orders
+            WHERE user_id = :user_id
+            AND products LIKE :product_id
         ");
         $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
-        $stmt->bindValue(':product_id', $productId, PDO::PARAM_STR); // Cast productId naar string
-
-        //$stmt->bindValue(':product_id', (string)$productId, PDO::PARAM_STR); // Cast productId naar string
+        $stmt->bindValue(':product_id', '%"product_id":' . $productId . '%', PDO::PARAM_STR); // Zoek als string
         $stmt->execute();
-        return $stmt->fetchColumn() > 0;
+    
+        return $stmt->fetchColumn() > 0; // Retourneer true als er minstens 1 resultaat is
     }
+    
     
     
     
