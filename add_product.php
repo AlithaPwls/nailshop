@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Bestand uploaden
         if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = __DIR__ . '/images/'; // Zorg dat deze map bestaat
+            $uploadDir = '/Applications/XAMPP/xamppfiles/htdocs/nailshop/images/';
             $uploadedFile = $_FILES['image_file'];
             $fileExtension = strtolower(pathinfo($uploadedFile['name'], PATHINFO_EXTENSION));
             
