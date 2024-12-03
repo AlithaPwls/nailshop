@@ -27,7 +27,7 @@ $product = [
 
 if ($product_id) {
     // Haal productdata op uit de database via de Product::getById() methode
-    $product = Product::getById($product_id) ?: $product;
+    $product = Products::getById($product_id) ?: $product;
 }
 
 
