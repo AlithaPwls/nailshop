@@ -27,7 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Bestand uploaden
         if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = '/Applications/XAMPP/xamppfiles/htdocs/nailshop/images/';
+            
+            $uploadDir = __DIR__ . '/images/';
             $uploadedFile = $_FILES['image_file'];
             $fileExtension = strtolower(pathinfo($uploadedFile['name'], PATHINFO_EXTENSION));
             
@@ -40,15 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Genereer een unieke naam voor de afbeelding
             $fileName = uniqid('product_', true) . '.' . $fileExtension;
             $filePath = $uploadDir . $fileName;
-
-
-            if (!file_exists($uploadDir)) {
-                throw new Exception("Upload directory does not exist: " . $uploadDir);
-            }
-            
-            if (!is_writable($uploadDir)) {
-                throw new Exception("Upload directory is not writable: " . $uploadDir);
-            }
 
             
             if (!move_uploaded_file($uploadedFile['tmp_name'], $filePath)) {
