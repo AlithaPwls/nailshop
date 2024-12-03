@@ -28,9 +28,9 @@ if ($result->rowCount() > 0) {
     $products = $result->fetchAll(PDO::FETCH_ASSOC);
 } else {
     $products = [];
-}
-*/
-$products = Products::getAll();
+}*/
+$product = Products::getAll();
+
 // Controleer of een kleurcategorie of glitter is geselecteerd
 $colorgroup = $_GET['color_group'] ?? 'all';
 ?>
