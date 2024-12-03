@@ -8,10 +8,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || !isset($_
 }
 // Laad de benodigde klassen
 include_once (__DIR__ . "/classes/User.php");
-require("/Applications/XAMPP/xamppfiles/htdocs/nailshop/classes/Products.php");
-echo "Products.php is succesvol geladen!";
-exit;
 include_once (__DIR__ . "/classes/Db.php");
+include_once (__DIR__ . "/classes/Products.php");
 
 // Haal de user_id uit de sessie
 $user_id = $_SESSION['user_id'];
