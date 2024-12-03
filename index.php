@@ -6,7 +6,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true || !isset($_
     header('Location: login.php');
     exit(); // Stop verdere uitvoering na redirect
 }
-echo "De waarde van __DIR__ is: " . __DIR__;
 exit;
 // Laad de benodigde klassen
 include_once (__DIR__ . "/classes/User.php");
