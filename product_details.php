@@ -77,7 +77,7 @@ $reviews = Review::getReviewsByProductId($product_id);
         <div class="reviews-container">
             <?php foreach ($reviews as $review): ?>
                 <div class="review-item">
-                    <h4><?= htmlspecialchars($review['email']); ?></h4>
+                    <h4><?= htmlspecialchars($review['firstname' . 'lastname']); ?></h4>
                     <small><?= htmlspecialchars($review['created_at']); ?></small>
                     <p><?= htmlspecialchars($review['text']); ?></p>
                 </div>
