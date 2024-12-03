@@ -41,6 +41,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fileName = uniqid('product_', true) . '.' . $fileExtension;
             $filePath = $uploadDir . $fileName;
 
+
+            
+            if (!file_exists($uploadDir)) {
+                throw new Exception("Upload directory does not exist: " . $uploadDir);
+            }
+            
+            if (!is_writable($uploadDir)) {
+                throw new Exception("Upload directory is not writable: " . $uploadDir);
+            }
+
             
             if (!move_uploaded_file($uploadedFile['tmp_name'], $filePath)) {
                 throw new Exception("Failed to upload image.");
