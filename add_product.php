@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Maak een nieuw Product-object en sla het op
-        $product = new Product();
+        $product = new Products();
         $product->setColorName($colorName);
         $product->setColorNumber($colorNumber);
         $product->setPrice($price);
