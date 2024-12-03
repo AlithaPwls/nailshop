@@ -1,12 +1,7 @@
 <?php
 // Zorg ervoor dat de Product-klasse geladen wordt
+include_once(__DIR__ . "/classes/Products.php");
 
-
-include_once (__DIR__ . "/classes/Products.php");
-
-
-
-// De rest van je code blijft hetzelfde
 session_start();
 if ($_SESSION['loggedin'] !== true || (int)$_SESSION['is_admin'] !== 1) {
     header('Location: login.php');
@@ -26,12 +21,52 @@ $product = [
 ];
 
 if ($product_id) {
-    // Haal productdata op uit de database via de Product::getById() methode
     $product = Products::getById($product_id) ?: $product;
 }
 
+// Update product
+if (isset($_POST['update_product'])) {
+    $id = intval($_POST['id']);
+    $color_name = $_POST['color_name'];
+    $color_number = $_POST['color_number'];
+    $price = $_POST['price'];
+    $has_glitter = isset($_POST['has_glitter']) ? 1 : 0;
+    $image_url = $_POST['image_url'];
+    $color_group = $_POST['color_group'];
+    $description = $_POST['color_description'];
 
-?><!DOCTYPE html>
+    $product = new Products();
+    $product->setId($id);
+    $product->setColorName($color_name);
+    $product->setColorNumber($color_number);
+    $product->setPrice($price);
+    $product->setHasGlitter($has_glitter);
+    $product->setImageUrl($image_url);
+    $product->setColorGroup($color_group);
+    $product->setColorDescription($description);
+
+    if ($product->update()) {
+        header("Location: product_details.php?id=$id");
+        exit();
+    } else {
+        echo "Error: Product could not be updated.";
+    }
+}
+
+// Delete product
+if (isset($_POST['delete_product'])) {
+    $id = intval($_POST['id']);
+
+    if (Products::delete($id)) {
+        header("Location: index.php");
+        exit();
+    } else {
+        echo "Error: Product could not be deleted.";
+    }
+}
+?>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -99,53 +134,3 @@ if ($product_id) {
     </form>
 </body>
 </html>
-
-<?php
-// Update product
-
-// Update product
-if (isset($_POST['update_product'])) {
-    $id = intval($_POST['id']);
-    $color_name = $_POST['color_name'];
-    $color_number = $_POST['color_number'];
-    $price = $_POST['price'];
-    $has_glitter = isset($_POST['has_glitter']) ? 1 : 0;
-    $image_url = $_POST['image_url'];
-    $color_group = $_POST['color_group'];
-    $description = $_POST['color_description'];
-
-    // Maak een nieuw productobject en werk bij
-    $product = new Products();
-    $product->setId($id);
-    $product->setColorName($color_name);
-    $product->setColorNumber($color_number);
-    $product->setPrice($price);
-    $product->setHasGlitter($has_glitter);
-    $product->setImageUrl($image_url);
-    $product->setColorGroup($color_group);
-    $product->setColorDescription($description);
-
-    // Werk het product bij
-    if ($product->update()) {
-        // Redirect naar product detail pagina na update
-        header("Location: product_details.php?id=$id");
-        exit();
-    } else {
-        echo "Error: Product could not be updated.";
-    }
-}
-
-// Delete product
-if (isset($_POST['delete_product'])) {
-    $id = intval($_POST['id']);
-
-    // Verwijder het product
-    if (Product::delete($id)) {
-        // Redirect naar de homepage na het verwijderen van het product
-        header("Location: index.php");
-        exit();
-    } else {
-        echo "Error: Product could not be deleted.";
-    }
-}
-?>
