@@ -34,7 +34,9 @@ class Order {
             AND JSON_SEARCH(products, 'one', :product_id, NULL, '$[*].product_id') IS NOT NULL
         ");
         $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
-        $stmt->bindValue(':product_id', (string)$productId, PDO::PARAM_STR); // Cast productId naar string
+        $stmt->bindValue(':product_id', $productId, PDO::PARAM_STR); // Cast productId naar string
+
+        //$stmt->bindValue(':product_id', (string)$productId, PDO::PARAM_STR); // Cast productId naar string
         $stmt->execute();
         return $stmt->fetchColumn() > 0;
     }
