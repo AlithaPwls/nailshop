@@ -29,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             $uploadDir = sys_get_temp_dir() . '/';
             //$uploadDir = __DIR__ . '/images/';
-                        echo "Upload directory: $uploadDir";
 
             $uploadedFile = $_FILES['image_file'];
             $fileExtension = strtolower(pathinfo($uploadedFile['name'], PATHINFO_EXTENSION));
@@ -64,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $product->setColorDescription($colorDescription);
         $product->save();
 
-        echo "Product succesvol toegevoegd!";
+        echo "Product succesvol toegevoegd! 🩷";
     } catch (Exception $e) {
         echo "Fout: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
     }
