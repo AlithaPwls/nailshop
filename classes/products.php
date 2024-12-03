@@ -176,9 +176,9 @@ class Products {
     {
         $conn = Db::getConnection();
         $stmt = $conn->query("SELECT * FROM products");
-        return $stmt->fetch_all(MYSQLI_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); // Gebruik fetchAll in plaats van fetch_all
     }
-
+    
     // Opslaan van een nieuw product in de database
     public function save()
     {
