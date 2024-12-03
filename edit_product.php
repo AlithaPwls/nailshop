@@ -115,7 +115,7 @@ if (isset($_POST['update_product'])) {
     $description = $_POST['color_description'];
 
     // Maak een nieuw productobject en werk bij
-    $product = new Product();
+    $product = new Products();
     $product->setId($id);
     $product->setColorName($color_name);
     $product->setColorNumber($color_number);
