@@ -21,7 +21,7 @@ $user = User::getById($user_id);
 $conn = Db::getConnection();
 
 // Haal willekeurige producten op
-$sql = "SELECT * FROM products ORDER BY RAND()";
+/*$sql = "SELECT * FROM products ORDER BY RAND()";
 $result = $conn->query($sql);
 
 if ($result->rowCount() > 0) {
@@ -29,7 +29,8 @@ if ($result->rowCount() > 0) {
 } else {
     $products = [];
 }
-
+*/
+$products = Products::getAll();
 // Controleer of een kleurcategorie of glitter is geselecteerd
 $colorgroup = $_GET['color_group'] ?? 'all';
 ?>
