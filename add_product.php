@@ -42,6 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $filePath = $uploadDir . $fileName;
 
             // Verplaats het bestand naar de uploads-map
+            echo $filePath;
+            exit;
+
             if (!move_uploaded_file($uploadedFile['tmp_name'], $filePath)) {
                 throw new Exception("Failed to upload image.");
             }
