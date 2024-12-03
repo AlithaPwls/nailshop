@@ -179,6 +179,7 @@ class Products {
         return $stmt->fetchAll(PDO::FETCH_ASSOC); // Gebruik fetchAll in plaats van fetch_all
     }
     
+    
     // Opslaan van een nieuw product in de database
     public function save()
     {
