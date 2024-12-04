@@ -1,5 +1,5 @@
 <?php
-require '/images/vendor/autoload.php';
+require 'vendor/autoload.php';
 
 \Cloudinary::config(array( 
   "cloud_name" => "nailshop", 
