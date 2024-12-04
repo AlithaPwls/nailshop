@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="field">
         <label for="color_number">Color number:</label>
-        <input type="text" id="color_number" name="color_number" required>
+        <input type="number" id="color_number" name="color_number" required>
     </div>
 
     <div class="field">
