@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Bestand uploaden
         include 'classes/cloudinary_config.php';
 
+
         if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
             $uploadedFile = $_FILES['image_file']['tmp_name'];
         
