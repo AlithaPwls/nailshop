@@ -27,13 +27,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Bestand uploaden
         if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
             
-            $uploadDir = sys_get_temp_dir() . '/';
-            //$uploadDir = __DIR__ . '/images/';
+            //$uploadDir = sys_get_temp_dir() . '/'; //die tijdelijke map 
+            $uploadDir = __DIR__ . '/images/';
 
             $uploadedFile = $_FILES['image_file'];
             $fileExtension = strtolower(pathinfo($uploadedFile['name'], PATHINFO_EXTENSION));
             
-            $allowedExtensions = ['jpeg', 'jpg', 'png'];
+            $allowedExtensions = ['jpeg', 'jpg', 'png', 'webp'];
             if (!in_array($fileExtension, $allowedExtensions)) {
                 throw new Exception("Only JPEG and PNG files are allowed.");
             }
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("No image uploaded or upload error.");
         }
 
-        // Maak een nieuw Product-object en sla het op
+        // Nieuw product maken en opslaan
         $product = new Products();
         $product->setColorName($colorName);
         $product->setColorNumber($colorNumber);
