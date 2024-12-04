@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
             
             //$uploadDir = sys_get_temp_dir() . '/'; //die tijdelijke map 
-            $uploadDir = __DIR__ . '/images/';
+            $uploadDir = __DIR__ . '/uploads/';
 
             $uploadedFile = $_FILES['image_file'];
             $fileExtension = strtolower(pathinfo($uploadedFile['name'], PATHINFO_EXTENSION));
@@ -37,17 +37,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!in_array($fileExtension, $allowedExtensions)) {
                 throw new Exception("Only JPEG and PNG files are allowed.");
             }
-
-            // Genereer een unieke naam voor de afbeelding
+            
             $fileName = uniqid('product_', true) . '.' . $fileExtension;
             $filePath = $uploadDir . $fileName;
-
+            
             if (!move_uploaded_file($uploadedFile['tmp_name'], $filePath)) {
-                  throw new Exception("Failed to upload image.");
+                throw new Exception("Failed to upload image.");
             }
+            
+            $imageUrl = 'uploads/' . $fileName;
 
-            // Zet het relatieve pad voor opslag in de database
-            $imageUrl = 'images/' . $fileName;
         } else {
             throw new Exception("No image uploaded or upload error.");
         }
