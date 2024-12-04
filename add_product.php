@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $colorDescription = htmlspecialchars($_POST['color_description'], ENT_QUOTES, 'UTF-8');
 
         // Bestand uploaden
-        include 'cloudinary_config.php';
+        include 'classes/cloudinary_config.php';
 
         if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
             $uploadedFile = $_FILES['image_file']['tmp_name'];
