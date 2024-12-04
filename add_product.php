@@ -27,8 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Bestand uploaden
         if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
             
-            //$uploadDir = sys_get_temp_dir() . '/'; //die tijdelijke map 
-            $uploadDir = __DIR__ . '/images/';
+            $uploadDir = sys_get_temp_dir() . '/'; //die tijdelijke map 
+            //$uploadDir = __DIR__ . '/images/';
 
             $uploadedFile = $_FILES['image_file'];
             $fileExtension = strtolower(pathinfo($uploadedFile['name'], PATHINFO_EXTENSION));
