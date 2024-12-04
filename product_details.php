@@ -15,7 +15,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 $product_id = $_GET['id'] ?? null;
 
 if (!$product_id) {
-    echo "Product not found.";
+    echo "Product not found";
     exit();
 }
 
