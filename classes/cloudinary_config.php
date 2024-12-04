@@ -1,5 +1,5 @@
 <?php
-require '/vendor/autoload.php'; // Zorg dat dit pad klopt
+require __DIR__ . '/../vendor/autoload.php';
 
 use Cloudinary\Configuration\Configuration;
 
