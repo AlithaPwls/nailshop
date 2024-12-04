@@ -1,5 +1,5 @@
 <?php
-require '../vendor/autoload.php'; // Zorg dat dit pad klopt
+require 'vendor/autoload.php';
 
 use Cloudinary\Configuration\Configuration;
 
@@ -10,4 +10,6 @@ Configuration::instance([
         'api_secret' => 'nkAVSDYQlvEX3bQMNCzHfTDf46c',
     ],
 ]);
+
+echo "Cloudinary configuratie werkt!";
 ?>
