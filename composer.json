@@ -1,8 +1,0 @@
-{
-    "require": {
-        "cloudinary/cloudinary_php": "^2.14"
-    }, 
-    "autoload": { "psr-4": { "Cloudinary\\": "vendor/cloudinary/cloudinary_php/src/" 
-}
-}
-}

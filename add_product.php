@@ -25,23 +25,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $colorDescription = htmlspecialchars($_POST['color_description'], ENT_QUOTES, 'UTF-8');
 
         // Bestand uploaden
-        include 'classes/cloudinary_config.php';
-
-
         if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
-            $uploadedFile = $_FILES['image_file']['tmp_name'];
-        
-            // Upload naar Cloudinary
-            $uploadResult = \Cloudinary\Uploader::upload($uploadedFile);
-        
-            // Haal de URL van de geüploade afbeelding op
-            $imageUrl = $uploadResult['secure_url'];
+            
+            //$uploadDir = sys_get_temp_dir() . '/'; //die tijdelijke map 
+            $uploadDir = __DIR__ . '/images/';
+
+            $uploadedFile = $_FILES['image_file'];
+            $fileExtension = strtolower(pathinfo($uploadedFile['name'], PATHINFO_EXTENSION));
+            
+            $allowedExtensions = ['jpeg', 'jpg', 'png', 'webp'];
+            if (!in_array($fileExtension, $allowedExtensions)) {
+                throw new Exception("Only JPEG and PNG files are allowed.");
+            }
+
+            // Genereer een unieke naam voor de afbeelding
+            $fileName = uniqid('product_', true) . '.' . $fileExtension;
+            $filePath = $uploadDir . $fileName;
+
+            if (!move_uploaded_file($uploadedFile['tmp_name'], $filePath)) {
+                  throw new Exception("Failed to upload image.");
+            }
+
+            // Zet het relatieve pad voor opslag in de database
+            $imageUrl = 'images/' . $fileName;
         } else {
             throw new Exception("No image uploaded or upload error.");
         }
-
-
-        
 
         // Nieuw product maken en opslaan
         $product = new Products();
