@@ -1,5 +1,7 @@
 <?php
-require __DIR__ . '../vendor/autoload.php';
+echo __DIR__;
+
+require __DIR__ . '/../vendor/autoload.php';
 
 use Cloudinary\Configuration\Configuration;
 
