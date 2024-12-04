@@ -1,17 +1,14 @@
 <?php
-echo __DIR__;
+// Controleer of autoload.php correct wordt geladen
+$autoloadPath = __DIR__ . '/../vendor/autoload.php';
 
-require __DIR__ . '/../vendor/autoload.php';
-
-// Test of de Uploader-klasse bestaat
-use Cloudinary\Uploader;
-
-if (class_exists('Cloudinary\Uploader')) {
-    echo "Cloudinary Uploader class is loaded!";
+if (file_exists($autoloadPath)) {
+    echo "Autoload file gevonden op: $autoloadPath";
+    require $autoloadPath;
 } else {
-    echo "Cloudinary Uploader class is NOT loaded.";
+    echo "Autoload file NIET gevonden op: $autoloadPath";
+    exit; // Stop het script als autoload.php niet wordt gevonden
 }
-
 
 use Cloudinary\Configuration\Configuration;
 
