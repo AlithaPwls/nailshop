@@ -5,7 +5,7 @@ use Cloudinary\Cloudinary;
 
 $cloudinary = new Cloudinary([
     'cloud' => [
-        'cloud_name' => 'nailshop',
+        'cloud_name' => 'di1c3petu',
         'api_key'    => '795931936958539',
         'api_secret' => 'nkAVSDYQlvEX3bQMNCzHfTDf46c',
     ],
