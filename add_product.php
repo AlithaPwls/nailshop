@@ -14,22 +14,21 @@ $user = User::getUserByEmail($email);
 
 include_once("classes/Db.php");
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $colorName = htmlspecialchars($_POST['color_name'], ENT_QUOTES, 'UTF-8');
         $colorNumber = htmlspecialchars($_POST['color_number'], ENT_QUOTES, 'UTF-8');
-        $price = floatval($_POST['price']);
+        $price = floatval($_POST['price']); // dit getal moet geldig zijn dus niet negatief
         $hasGlitter = isset($_POST['has_glitter']) ? 1 : 0;
         $colorGroup = htmlspecialchars($_POST['color_group'], ENT_QUOTES, 'UTF-8');
         $colorDescription = htmlspecialchars($_POST['color_description'], ENT_QUOTES, 'UTF-8');
 
-        // Controleer of de uploads-map schrijfbaar is
-        echo "Rechten van uploads-map: ";
-        var_dump(is_writable(__DIR__ . '/uploads')); // Dit zou 'true' moeten retourneren als de map schrijfbaar is.
-
         // Bestand uploaden
         if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = __DIR__ . '/uploads/';
+            
+            //$uploadDir = sys_get_temp_dir() . '/'; //die tijdelijke map 
+            $uploadDir = __DIR__ . '/images/';
 
             $uploadedFile = $_FILES['image_file'];
             $fileExtension = strtolower(pathinfo($uploadedFile['name'], PATHINFO_EXTENSION));
@@ -39,14 +38,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception("Only JPEG and PNG files are allowed.");
             }
 
+            // Genereer een unieke naam voor de afbeelding
             $fileName = uniqid('product_', true) . '.' . $fileExtension;
             $filePath = $uploadDir . $fileName;
 
             if (!move_uploaded_file($uploadedFile['tmp_name'], $filePath)) {
-                throw new Exception("Failed to upload image.");
+                  throw new Exception("Failed to upload image.");
             }
 
-            $imageUrl = 'uploads/' . $fileName;
+            // Zet het relatieve pad voor opslag in de database
+            $imageUrl = 'images/' . $fileName;
         } else {
             throw new Exception("No image uploaded or upload error.");
         }
@@ -57,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $product->setColorNumber($colorNumber);
         $product->setPrice($price);
         $product->setHasGlitter($hasGlitter);
-        $product->setImageUrl($imageUrl);
+        $product->setImageUrl($imageUrl); // Gebruik het geüploade bestandspad
         $product->setColorGroup($colorGroup);
         $product->setColorDescription($colorDescription);
         $product->save();
@@ -67,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Fout: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
