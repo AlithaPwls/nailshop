@@ -29,6 +29,10 @@ class ComposerStaticInit2b2371e62020873bfb28857c28cf7fef
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
         ),
+        'C' => 
+        array (
+            'Cloudinary\\' => 11,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -38,8 +42,8 @@ class ComposerStaticInit2b2371e62020873bfb28857c28cf7fef
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -60,6 +64,10 @@ class ComposerStaticInit2b2371e62020873bfb28857c28cf7fef
         'GuzzleHttp\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+        ),
+        'Cloudinary\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/cloudinary/cloudinary_php/src',
         ),
     );
 
