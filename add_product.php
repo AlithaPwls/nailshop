@@ -1,6 +1,4 @@
 <?php
-
-
 session_start();
 
 if ($_SESSION['loggedin'] !== true) {
@@ -16,6 +14,7 @@ $user = User::getUserByEmail($email);
 
 include_once("classes/Db.php");
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $colorName = htmlspecialchars($_POST['color_name'], ENT_QUOTES, 'UTF-8');
@@ -27,32 +26,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Bestand uploaden
         if (isset($_FILES['image_file']) && $_FILES['image_file']['error'] === UPLOAD_ERR_OK) {
-            // Upload directory instellen
-            $uploadDir = __DIR__ . '/uploads/'; // Zorg dat dit de juiste map is
+            
+            //$uploadDir = sys_get_temp_dir() . '/'; //die tijdelijke map 
+            $uploadDir = __DIR__ . '/images/';
 
-            // Bestand ophalen en controleren
             $uploadedFile = $_FILES['image_file'];
             $fileExtension = strtolower(pathinfo($uploadedFile['name'], PATHINFO_EXTENSION));
             
-            // Controleer of bestandstype is toegestaan
             $allowedExtensions = ['jpeg', 'jpg', 'png', 'webp'];
             if (!in_array($fileExtension, $allowedExtensions)) {
-                throw new Exception("Alleen JPEG, PNG, en WEBP-bestanden zijn toegestaan.");
+                throw new Exception("Only JPEG and PNG files are allowed.");
             }
 
-            // Genereer een unieke naam voor het bestand
+            // Genereer een unieke naam voor de afbeelding
             $fileName = uniqid('product_', true) . '.' . $fileExtension;
             $filePath = $uploadDir . $fileName;
 
-            // Verplaats het bestand naar de uploads-map
             if (!move_uploaded_file($uploadedFile['tmp_name'], $filePath)) {
-                throw new Exception("Uploaden van afbeelding mislukt.");
+                  throw new Exception("Failed to upload image.");
             }
 
             // Zet het relatieve pad voor opslag in de database
-            $imageUrl = 'uploads/' . $fileName;
+            $imageUrl = 'images/' . $fileName;
         } else {
-            throw new Exception("Geen afbeelding geüpload of er is een uploadfout.");
+            throw new Exception("No image uploaded or upload error.");
         }
 
         // Nieuw product maken en opslaan
@@ -71,4 +68,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Fout: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
     }
 }
+
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/addproduct.css">
+    <title>Voeg Product Toe</title>
+</head>
+<body>
+    <?php include_once('nav.inc.php'); ?>
+    <h1>Add new product</h1>
+    <form action="add_product.php" method="post" class="foremeke" enctype="multipart/form-data">
+    <div class="field">
+        <label for="color_name">Color name:</label>
+        <input type="text" id="color_name" name="color_name" required>
+    </div>
+
+    <div class="field">
+        <label for="color_number">Color number:</label>
+        <input type="text" id="color_number" name="color_number" required>
+    </div>
+
+    <div class="field">
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" step="0.01" required>
+    </div>
+
+    <div class="field">
+        <label for="has_glitter">Has glitter:</label>
+        <input type="checkbox" id="has_glitter" name="has_glitter" value="1">
+    </div>
+
+    <div class="field">
+        <label for="image_url">Upload Image:</label>
+        <input type="file" id="image_url" name="image_file" accept="image/*" required>
+    </div>
+
+    <div class="field">
+        <label for="color_group">Color group:</label>
+        <select id="color_group" name="color_group" required>
+            <option value="" disabled selected>Kies een kleur groep</option>
+            <option value="pink">Pink</option>
+            <option value="red">Red</option>
+            <option value="green">Green</option>
+            <option value="blue">Blue</option>
+            <option value="brown">Brown</option>
+        </select>
+    </div>
+
+    <div class="field">
+        <label for="color_description">Description</label>
+        <input type="text" id="color_description" name="color_description" required>
+    </div>
+
+    <button class="btn" type="submit">Add product to website</button>
+</form>
+
+</body>
+</html>
+
