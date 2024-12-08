@@ -6,9 +6,9 @@ if ($_SESSION['loggedin'] !== true) {
     header('Location: login.php');
     exit();
 }
-include_once (__DIR__ . "/classes/User.php");
-include_once (__DIR__ . "/classes/Cart.php");
 
+include_once(__DIR__ . "/classes/User.php");
+include_once(__DIR__ . "/classes/Cart.php");
 
 // Haal de gebruiker op via de User-class
 $user = User::getByEmail($_SESSION['email']);
@@ -34,6 +34,31 @@ if (isset($_POST['remove_product'])) {
     }
 }
 
+// Controleer of de gebruiker probeert door te gaan naar de checkout
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cart_total'])) {
+    $cartTotal = floatval($_POST['cart_total']); // Totale prijs uit het formulier
+    $userCurrency = floatval($user['currency']); // Haal currency op van de gebruiker
+
+    // Controleer of de gebruiker voldoende currency heeft
+    if ($userCurrency < $cartTotal) {
+        // Toon een alert en blijf op dezelfde pagina
+        echo "<script>alert('Not enough currency to complete the purchase. Please add more funds.');</script>";
+    } else {
+        // Verlaag de currency van de gebruiker
+        $newCurrency = $userCurrency - $cartTotal;
+        $updated = User::updateCurrency($user['id'], $newCurrency);
+
+        if ($updated) {
+            // Sla de bestelling op in de sessie en ga door naar de checkout
+            $_SESSION['cart_items'] = $cartItems;
+            $_SESSION['cart_total'] = $cartTotal;
+            header('Location: order.php');
+            exit();
+        } else {
+            echo "<script>alert('Error updating your currency. Please try again later.');</script>";
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -76,15 +101,11 @@ if (isset($_POST['remove_product'])) {
                                 <img src="<?php echo $item['image_url']; ?>" alt="Product Image">
                                 <span><?php echo htmlspecialchars($item['color_name']) . " - " . htmlspecialchars($item['color_number']); ?></span>
                             </td>
-
                             <td>€<?php echo number_format($item['price'], 2); ?></td>
                             <td><?php echo $item['quantity']; ?></td>
                             <td>€<?php echo number_format($itemTotal, 2); ?></td>
                             <td>
-                                <!-- De vuilbakknop voor verwijdering -->
-                                <button type="submit" name="remove_product" value="<?php echo $item['id']; ?>">
-                                    ❌
-                                </button>
+                                <button type="submit" name="remove_product" value="<?php echo $item['id']; ?>">❌</button>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -98,18 +119,10 @@ if (isset($_POST['remove_product'])) {
             </form>
 
             <!-- Nieuwe form voor de checkout -->
-<form action="order.php" method="POST">
-    <!-- Sla de producten en totaal op in de sessie -->
-    <input type="hidden" name="cart_total" value="<?php echo number_format($total + 4.95, 2); ?>">
-
-    <?php
-    // Sla de winkelwagenitems op in de sessie
-    $_SESSION['cart_items'] = $cartItems;
-    ?>
-
-    <button type="submit" class="checkout-btn">Proceed to Checkout</button>
-</form>
-
+            <form action="view_cart.php" method="POST">
+                <input type="hidden" name="cart_total" value="<?php echo number_format($total + 4.95, 2); ?>">
+                <button type="submit" class="checkout-btn">Proceed to Checkout</button>
+            </form>
         <?php endif; ?>
     </div>
 </body>
