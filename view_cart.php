@@ -28,21 +28,20 @@ if (isset($_POST['remove_product'])) {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cart_total'])) {
-    $cartTotal = floatval($_POST['cart_total']);
-    $userCurrency = floatval($user['currency']); 
 
-    // Controleer of user genoeg currency
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cart_total'])) {
+    $cartTotal = floatval($_SESSION['cart_total']);
+    $userCurrency = floatval($user['currency']);
+
     if ($userCurrency < $cartTotal) {
         echo "<script>alert('Not enough currency to complete the purchase. Please add more funds.');</script>";
     } else {
-        // update curercny
         $newCurrency = $userCurrency - $cartTotal;
         $updated = User::updateCurrency($user['id'], $newCurrency);
 
         if ($updated) {
             $_SESSION['cart_items'] = $cartItems;
-            $_SESSION['cart_total'] = $cartTotal;
+            $_SESSION['cart_total'] = $cartTotal; 
             header('Location: order.php');
             exit();
         } else {

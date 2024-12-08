@@ -1,10 +1,9 @@
 <?php
 session_start();
 
-include_once (__DIR__ . "/classes/Order.php");
-include_once (__DIR__ . "/classes/Cart.php");
-include_once (__DIR__ . "/classes/User.php");
-
+include_once(__DIR__ . "/classes/Order.php");
+include_once(__DIR__ . "/classes/Cart.php");
+include_once(__DIR__ . "/classes/User.php");
 
 // Controleer of de gebruiker is ingelogd
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
@@ -13,10 +12,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 }
 
 $user_id = $_SESSION['user_id'];
-
-// Haal de winkelwagenitems en totaal op
 $cartItems = isset($_SESSION['cart_items']) ? $_SESSION['cart_items'] : [];
-$total = isset($_POST['cart_total']) ? $_POST['cart_total'] : 0;
+$total = isset($_SESSION['cart_total']) ? floatval($_SESSION['cart_total']) : 0;
 
 // Haal de gebruiker op uit de database
 $user = User::getById($user_id);
@@ -53,8 +50,6 @@ if ($user && $user['currency'] >= $total) {
 } else {
     $error = "Insufficient funds. Please add more funds to your account.";
 }
-
-
 ?>
 
 <!DOCTYPE html>
